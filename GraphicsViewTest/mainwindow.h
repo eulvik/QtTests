@@ -36,6 +36,9 @@ private:
     void addTextItem(double w, double h);
     QFont getRandomFont();
     QString getRandomText();
+    void addRotateTransform(MySimpleTextItem* item);
+    void addTranslateTransform(MySimpleTextItem* item);
+    void addScaleTransform(MySimpleTextItem* item);
 };
 
 #endif // MAINWINDOW_H

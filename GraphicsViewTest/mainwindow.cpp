@@ -4,12 +4,18 @@
 #include <QGraphicsSimpleTextItem>
 #include <QPropertyAnimation>
 
+#include <time.h>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    srand(time(NULL));
     ui->setupUi(this);
     ui->graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+    _scene.setItemIndexMethod(QGraphicsScene::NoIndex);
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
     ui->graphicsView->setScene(&_scene);
 
     _texts.append(QString("Hello World"));
@@ -45,7 +51,7 @@ void MainWindow::on_actionAdd_Items_triggered()
     qreal w = ui->graphicsView->width();
     qreal h = ui->graphicsView->height();
     _scene.addRect(0, 0, w, h);
-    for(int i = 0; i < 500; i++) {
+    for(int i = 0; i < 2000; i++) {
         addTextItem(w, h);
     }
 }
@@ -81,34 +87,63 @@ void MainWindow::on_actionRemove_All_triggered()
 
 void MainWindow::on_actionStart_Simulation_triggered()
 {
-    int w = (int)_scene.width();
-    int h = (int)_scene.height();
-
     for(int i = 0; i < _textItems.size(); i++) {
         MySimpleTextItem* item = _textItems[i];
-        QPropertyAnimation* anRotation = new QPropertyAnimation(item, "rotation");
-        anRotation->setStartValue(0.0);
-        anRotation->setEndValue(360.0);
-        int ms = rand()%4000 + 1000;
-        anRotation->setDuration(ms);
-        _group.addAnimation(anRotation);
 
-        QPropertyAnimation* anX = new QPropertyAnimation(item, "x");
-        anX->setStartValue(item->x());
-        qreal endW = rand()%w;
-        anX->setEndValue(endW);
-        ms = rand()%4000 + 1000;
-        anX->setDuration(ms);
-        _group.addAnimation(anX);
-
-        QPropertyAnimation* anY = new QPropertyAnimation(item, "rotation");
-        anY->setStartValue(item->y());
-        qreal endH = rand()%h;
-        anY->setEndValue(endH);
-        ms = rand()%4000 + 1000;
-        anY->setDuration(ms);
-        _group.addAnimation(anY);
+        addRotateTransform(item);
+        addTranslateTransform(item);
+        //addScaleTransform(item);
     }
-    _group.setLoopCount(2147000000);
+    _group.setLoopCount(500);
     _group.start();
+}
+
+void MainWindow::addRotateTransform(MySimpleTextItem *item)
+{
+    QPropertyAnimation* anRotation = new QPropertyAnimation(item, "rotation");
+    anRotation->setStartValue(0.0);
+    anRotation->setEndValue(360.0);
+    int ms = rand()%4000 + 1000;
+    anRotation->setDuration(ms);
+    anRotation->setEasingCurve(QEasingCurve::InBounce);
+    anRotation->setLoopCount(5);
+    _group.addAnimation(anRotation);
+}
+
+void MainWindow::addTranslateTransform(MySimpleTextItem *item)
+{
+    int w = (int)_scene.width();
+    int h = (int)_scene.height();
+    QPropertyAnimation* anX = new QPropertyAnimation(item, "x");
+    anX->setStartValue(item->x());
+    qreal endW = rand()%w;
+    anX->setEndValue(endW);
+    int ms = rand()%4000 + 1000;
+    anX->setDuration(ms);
+    anX->setEasingCurve(QEasingCurve::InBack);
+    anX->setLoopCount(5);
+    _group.addAnimation(anX);
+
+    QPropertyAnimation* anY = new QPropertyAnimation(item, "rotation");
+    anY->setStartValue(item->y());
+    qreal endH = rand()%h;
+    anY->setEndValue(endH);
+    ms = rand()%4000 + 1000;
+    anY->setDuration(ms);
+    anY->setEasingCurve(QEasingCurve::BezierSpline);
+    anY->setLoopCount(5);
+    _group.addAnimation(anY);
+}
+
+void MainWindow::addScaleTransform(MySimpleTextItem *item)
+{
+    QPropertyAnimation* anScale = new QPropertyAnimation(item, "scale");
+    anScale->setStartValue(7.0);
+    int r = rand()%16 + 7;
+    anScale->setEndValue(r);
+    int ms = rand()%4000 + 1000;
+    anScale->setDuration(ms);
+    anScale->setEasingCurve(QEasingCurve::CosineCurve);
+    anScale->setLoopCount(5);
+    _group.addAnimation(anScale);
 }

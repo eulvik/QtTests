@@ -1,5 +1,10 @@
 #include "mysimpletextitem.h"
 
+#include <QFont>
+
+#include <iostream>
+using namespace std;
+
 MySimpleTextItem::MySimpleTextItem(const QString& text) :
     QGraphicsSimpleTextItem(text)
 {
@@ -36,4 +41,16 @@ void MySimpleTextItem::setYLocal(qreal y)
 {
    setY(y);
    yChanged();
+}
+
+qreal MySimpleTextItem::getScaleLocal()
+{
+    return font().pointSizeF();
+}
+
+void MySimpleTextItem::setScaleLocal(qreal scale)
+{
+    cout << "setScaleLocal " << scale << endl;
+    this->font().setPointSizeF(scale);
+    scaleChanged();
 }
