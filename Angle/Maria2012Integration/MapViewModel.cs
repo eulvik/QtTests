@@ -34,7 +34,7 @@ namespace Maria2012Integration
             MapLayer.ExtendedMapLayer.FetchVectorLabels = false;
             MapLayer.ExtendedMapLayer.MapRenderSimple = false;
 
-            MapLayer.ActiveMapName = MapLayer.ActiveMapNames.First();
+            MapLayer.ActiveMapTemplate = MapLayer.ActiveMapTemplates.First();
         }
     }
 }
