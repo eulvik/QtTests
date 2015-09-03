@@ -1,9 +1,31 @@
 #include <QCoreApplication>
+#include <QQmlApplicationEngine>
+#include <QGuiApplication>
+#include <QUrl>
+
+#include <angleqmlrendersurface.h>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    QGuiApplication application(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
-    return a.exec();
+    //QQmlApplicationEngine engine;
+    AngleQmlRenderSurface surf;//
+
+    //QSurfaceFormat f = surf->format();
+    //f.setRenderableType(QSurfaceFormat::OpenGLES);
+    //f.setVersion(2, 0);
+    //f.setSwapInterval(0);
+    //surf->setFormat(f);
+
+    surf.setSource(QUrl("qrc:/main.qml"));
+
+    surf.show();
+
+
+    std::cout << "status " << surf.status() << std::endl;
+    return application.exec();
 }
 

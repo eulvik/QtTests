@@ -11,6 +11,12 @@ QT       -= gui
 TARGET = AngleQml
 TEMPLATE = lib
 
+ARCH_EXT=64
+
+INCLUDEPATH += $$[QT_INSTALL_PREFIX]/../src/qtbase/src/3rdparty/angle/src
+
+LIBS += -llibEGL
+
 DEFINES += ANGLEQML_LIBRARY
 
 SOURCES += angleqmlrendersurface.cpp
@@ -22,3 +28,9 @@ unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+RESOURCES += \
+    qml.qrc
+
+
+DISTFILES += *.qml \

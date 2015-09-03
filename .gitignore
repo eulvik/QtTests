@@ -36,7 +36,8 @@
 [Dd]ebugPublic/
 [Rr]elease/
 x64/
-build/
+build*/
+lib*/
 bld/
 [Bb]in/
 [Oo]bj/
