@@ -1,0 +1,12 @@
+#ifndef ANGLEQML_GLOBAL_H
+#define ANGLEQML_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(ANGLEQML_LIBRARY)
+#  define ANGLEQMLSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define ANGLEQMLSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // ANGLEQML_GLOBAL_H
