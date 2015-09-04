@@ -8,10 +8,9 @@
 #include <QGuiApplication>
 #include <QMouseEvent>
 #include <QWindow>
+#include <QOpenGLContext>
 
 using namespace std;
-
-static char* dummyArg = "dummyArg";
 
 static Qt::MouseButtons getMouseButtons(const MouseButtonStates& ms)
 {
@@ -70,7 +69,7 @@ AngleNativeInterface::AngleNativeInterface() :
     _gl_initialized(false)
 {
     char** argv = new char*[1];
-    argv[0] = dummyArg;
+    argv[0] = "dummyArg";
     int argc = 1;
     if(QCoreApplication::startingUp())
         _app = new QGuiApplication (argc, argv);
@@ -104,10 +103,13 @@ bool AngleNativeInterface::initializeAngle(HWND hwnd, int width, int height)
 
 bool AngleNativeInterface::initializeGL()
 {
-   glEnable(GL_DEPTH_TEST);
-   glEnable(GL_CULL_FACE);
+   QOpenGLContext::currentContext()->makeCurrent(_surf);
+   auto gl = QOpenGLContext::currentContext()->functions();
 
-   _glScene->initializeGL(QGLContext::fromOpenGLContext(_surf->glContext()));
+   gl->glEnable(GL_DEPTH_TEST);
+   gl->glEnable(GL_CULL_FACE);
+
+   _glScene->initializeGL();
    _fr_timer.start();
    _gl_initialized = true;
 
@@ -128,6 +130,7 @@ void AngleNativeInterface::resizeRenderSurface(int width, int height)
 
 void* AngleNativeInterface::getBackBufferPointer()
 {
+    cout << "getBackBufferPointer() called." << endl;
     if(!_surf)
         return NULL;
 
@@ -152,6 +155,8 @@ void* AngleNativeInterface::getBackBufferPointer()
 
 void AngleNativeInterface::renderFrame()
 {
+    cout << "RenderFrame, currentContext " << QOpenGLContext::currentContext() << endl;
+    auto gl = QOpenGLContext::currentContext()->functions();
     if (_shutdown)
         return;
 
@@ -170,24 +175,11 @@ void AngleNativeInterface::renderFrame()
             return;
     }
 
-    glClearColor(0.3f, 0.3f, 0.35f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-#ifndef QT_OPENGL_ES // Wireframe rendering not supported under ES.
-    if(_wireframe)
-    {
-        glPushAttrib(GL_POLYGON_BIT);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    }
-#endif
+    gl->glClearColor(0.3f, 0.3f, 0.35f, 1.0f);
+    gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if(_glScene)
         _glScene->render();
-
-#ifndef QT_OPENGL_ES // Wireframe rendering not supported under ES.
-    if(_wireframe)
-        glPopAttrib();
-#endif
 
     _num_frames++;
 
@@ -201,7 +193,7 @@ void AngleNativeInterface::renderFrame()
        _num_frames = 0;
     }
 
-    GLenum err = glGetError();
+    GLenum err = gl->glGetError();
     if(err != GL_NO_ERROR)
     {
         string gl_error = "GL_NO_ERROR";
@@ -236,21 +228,6 @@ void AngleNativeInterface::renderFrame()
         cerr << "GL Error: " << gl_error << endl;
     }
 }
-
-void AngleNativeInterface::setWireframeRenderMode(bool wireFrameMode)
-{
-    _wireframe = wireFrameMode;
-
-#ifdef QT_OPENGL_ES
-    //_globe->setWireframe(_wireframe);
-#endif
-}
-
-bool AngleNativeInterface::getWireframeRenderMode() const
-{
-    return _wireframe;
-}
-
 
 void AngleNativeInterface::shutdown()
 {

@@ -4,9 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets opengl
+QT       += core gui widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = AngleHelloWorld
 TEMPLATE = app

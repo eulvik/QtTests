@@ -2,21 +2,22 @@
 
 #include <QVariant>
 
-#ifdef QT_OPENGL_ES_2
-#ifdef QT_OPENGL_ES_2_ANGLE
 #include <d3d9.h>
+#include <dxgi.h>
 #include <hash_map>
 #include <libEGL/Surface.h>
-#if QT_VERSION >= 0x050300
-#include <libGLESv2/renderer/d3d9/SwapChain9.h>
+
+#if QT_VERSION >= 0x050400
+  #include <libGLESv2/renderer/d3d/d3d9/SwapChain9.h>
+#elif QT_VERSION >= 0x050300
+  #include <libGLESv2/renderer/d3d9/SwapChain9.h>
 #else
-#include <libGLESv2/renderer/SwapChain9.h>
-#endif
-#endif
-#include <EGL/egl.h>
-#include <EGL/eglext.h>
+  #include <libGLESv2/renderer/SwapChain9.h>
 #endif
 
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#include <iostream>
 #define __STR2__(x) #x
 #define __STR1__(x) __STR2__(x)
 #define __LOC__ __FILE__ "("__STR1__(__LINE__)") : warning X0000: "
@@ -53,8 +54,9 @@ IDirect3DSurface9* RenderSurface::getD3DSurfaceHandle()
             return NULL;
     }
 
-#ifdef QT_OPENGL_ES_2_ANGLE
     EGLDisplay dpy = eglGetCurrentDisplay();
+    if(!dpy)
+        std::cout << "display is null" << std::endl;
     EGLBoolean result = eglSwapInterval(dpy, 0);
 
     EGLSurface sfc = eglGetCurrentSurface(EGL_DRAW);
@@ -62,10 +64,6 @@ IDirect3DSurface9* RenderSurface::getD3DSurfaceHandle()
     rx::SwapChain9* swap_chain9 = dynamic_cast<rx::SwapChain9*>(surface->getSwapChain());
 
     return swap_chain9->getRenderTarget();
-#else
-    #pragma message(__LOC__ "The M3D Globe Native -> Managed interface needs to be compiled with ANGLE OpenGL libraries")
-    return NULL;
-#endif
 }
 
 bool RenderSurface::makeCurrent()

@@ -7,13 +7,7 @@ namespace AngleWpf
         public static readonly DependencyProperty WireframeProperty =
            DependencyProperty.Register("Wireframe", typeof(bool), typeof(AngleImage),
                                        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-        public bool Wireframe
-        {
-            get { return (bool)GetValue(WireframeProperty); }
-            set { SetValue(WireframeProperty, value); }
-        }
-
+        
         public static readonly DependencyProperty FpsProperty =
             DependencyProperty.Register("Fps", typeof(double), typeof(AngleImage),
                             new PropertyMetadata(0.0));

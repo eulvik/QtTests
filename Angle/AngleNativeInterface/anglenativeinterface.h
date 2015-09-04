@@ -21,8 +21,6 @@ public:
     virtual void renderFrame();
     virtual void *getBackBufferPointer();
     virtual void resizeRenderSurface(int width, int height);
-    virtual void setWireframeRenderMode(bool);
-    virtual bool getWireframeRenderMode() const;
     virtual void shutdown();
     virtual void animate();
 

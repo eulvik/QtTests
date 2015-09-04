@@ -97,8 +97,6 @@ namespace AngleWpf
                 return false;
             }
 
-            InitDependencyProperties();
-
             return true;
         }
 
@@ -119,8 +117,6 @@ namespace AngleWpf
             if (!_imageSourceValid)
                 if (!AttachRenderTarget(false))
                     return;
-
-            UpdateDependencyProperties();
 
             Lock();
 
@@ -202,17 +198,6 @@ namespace AngleWpf
                     Unlock();
                 }
             }
-        }
-
-        private void InitDependencyProperties()
-        {
-            Wireframe = _angleInteractionAPI.GetWireFrameRenderMode();
-        }
-
-        private void UpdateDependencyProperties()
-        {
-            if (_angleInteractionAPI.GetWireFrameRenderMode() != Wireframe)
-                _angleInteractionAPI.SetWireFrameRenderMode(Wireframe);
         }
 
         public void HandleMouseMove(Point mousePosition, MouseEventArgs mouseEventArgs)

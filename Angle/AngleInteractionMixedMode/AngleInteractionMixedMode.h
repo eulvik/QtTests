@@ -62,16 +62,6 @@ namespace AngleInteractionMixedMode
 			_angleNativeInterface->resizeRenderSurface(newSize.Width, newSize.Height);
 		}
 
-		void SetWireFrameRenderMode(bool wireFrameMode)
-		{
-			_angleNativeInterface->setWireframeRenderMode(wireFrameMode);
-		}
-
-		bool GetWireFrameRenderMode()
-		{
-			return _angleNativeInterface->getWireframeRenderMode();
-		}
-
 		bool MouseMoved(Point position, Point delta, MouseEventArgs ^mouseEventArgs)
 		{
 			MouseEvent ev = _mapMouseEvent(position, delta, mouseEventArgs);

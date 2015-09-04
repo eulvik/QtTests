@@ -1,13 +1,20 @@
 #include <QApplication>
+#include <QLabel>
+#include <QSurfaceFormat>
+
 #include "angleglwidget.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    a.setApplicationName("cube");
-    a.setApplicationVersion("0.1");
-    AngleGLScene widget;
-    widget.show();
+    QApplication app(argc, argv);
 
-    return a.exec();
+    QSurfaceFormat format;
+    format.setDepthBufferSize(24);
+    QSurfaceFormat::setDefaultFormat(format);
+
+    app.setApplicationName("cube");
+    app.setApplicationVersion("0.1");
+    AngleGLWidget widget;
+    widget.show();
+    return app.exec();
 }
