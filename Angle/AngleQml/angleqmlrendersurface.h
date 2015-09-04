@@ -24,6 +24,7 @@ public slots:
 private:
     bool _madeCurrent;
     void checkError();
+    void createNewGLContext();
 };
 
 #endif // ANGLEQMLRENDERSURFACE_H

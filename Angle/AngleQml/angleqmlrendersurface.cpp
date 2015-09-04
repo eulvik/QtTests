@@ -3,7 +3,7 @@
 #include <QTimer>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
-
+#include <QtPlatformHeaders/QEGLNativeContext>
 #include <d3d9.h>
 #include <dxgi.h>
 #include <libEGL/Surface.h>
@@ -18,6 +18,13 @@
 #include <EGL/eglext.h>
 
 #include <iostream>
+
+static EGLint const attribute_list[] = {
+        EGL_RED_SIZE, 1,
+        EGL_GREEN_SIZE, 1,
+        EGL_BLUE_SIZE, 1,
+        EGL_NONE
+};
 
 AngleQmlRenderSurface::AngleQmlRenderSurface(QQmlEngine *engine, QWindow *parent)
     : QQuickView(engine, parent)
@@ -64,7 +71,9 @@ bool AngleQmlRenderSurface::makeCurrent()
     if(_madeCurrent)
         return false;
 
-    QOpenGLContext::currentContext()->makeCurrent(this);
+
+    //QOpenGLContext::currentContext()->makeCurrent(this);
+    createNewGLContext();
     _madeCurrent = true;
     return true;
 }
@@ -119,4 +128,33 @@ void AngleQmlRenderSurface::checkError()
         std::cout << "Found error: " << gl_error << std::endl;
     }
     std::cout << "No error found." << std::endl;
+}
+
+void AngleQmlRenderSurface::createNewGLContext()
+{
+    QOpenGLContext::currentContext()->makeCurrent(0);
+    EGLDisplay display;
+    EGLConfig config;
+    EGLContext context;
+    EGLSurface surface;
+    NativeWindowType native_window;
+    EGLint num_config;
+    /* get an EGL display connection */
+    display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+    /* initialize the EGL display connection */
+    eglInitialize(display, NULL, NULL);
+    /* get an appropriate EGL frame buffer configuration */
+    eglChooseConfig(display, attribute_list, &config, 1, &num_config);
+//    /* create an EGL rendering context */
+    context = eglCreateContext(display, config, EGL_NO_CONTEXT, NULL);
+//    /* create a native window */
+//    /* create an EGL window surface */
+    surface = eglCreateWindowSurface(display, config, (EGLNativeWindowType)this->winId(), NULL);
+//    /* connect the context to the surface */
+    //eglMakeCurrent(display, surface, surface, context);
+//    /* clear the color buffer */
+    QEGLNativeContext ctx(context, display);
+    QOpenGLContext::currentContext()->setNativeHandle(QVariant::fromValue<QEGLNativeContext>(ctx));
+    bool success = QOpenGLContext::currentContext()->create();
+    QOpenGLContext::currentContext()->makeCurrent(this);
 }
