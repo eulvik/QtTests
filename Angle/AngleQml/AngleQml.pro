@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += qml quick
-
-QT       -= gui
+QT       += qml quick gui
 
 TARGET = AngleQml
 TEMPLATE = lib
@@ -15,14 +13,17 @@ ARCH_EXT=64
 
 INCLUDEPATH += $$[QT_INSTALL_PREFIX]/../src/qtbase/src/3rdparty/angle/src
 
-LIBS += -llibEGL
+Release:LIBS += -llibEGL
+Debug:LIBS += -llibEGLd
 
 DEFINES += ANGLEQML_LIBRARY
 
-SOURCES += angleqmlrendersurface.cpp
+SOURCES += angleqmlrendersurface.cpp \
+    angleqmlnativeinterface.cpp
 
 HEADERS += angleqmlrendersurface.h\
-        angleqml_global.h
+        angleqml_global.h \
+    angleqmlnativeinterface.h
 
 unix {
     target.path = /usr/lib

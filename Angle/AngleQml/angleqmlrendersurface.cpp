@@ -3,7 +3,6 @@
 #include <QTimer>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
-#include <QtPlatformHeaders/QEGLNativeContext>
 #include <d3d9.h>
 #include <dxgi.h>
 #include <libEGL/Surface.h>
@@ -36,8 +35,7 @@ AngleQmlRenderSurface::AngleQmlRenderSurface()
 {
     _madeCurrent = false;
 
-    connect(this, SIGNAL(openglContextCreated(QOpenGLContext*)), SLOT(handleOpenGLContextCreated(QOpenGLContext*)));
-    connect(this, SIGNAL(beforeRendering()), SLOT(handleBeforeRendering()));
+    connect(this, SIGNAL(beforeRendering()), SLOT(handleBeforeRendering()), Qt::DirectConnection);
 }
 
 IDirect3DSurface9* AngleQmlRenderSurface::getD3DSurfaceHandle()
@@ -71,16 +69,9 @@ bool AngleQmlRenderSurface::makeCurrent()
     if(_madeCurrent)
         return false;
 
-
-    //QOpenGLContext::currentContext()->makeCurrent(this);
-    createNewGLContext();
+    QOpenGLContext::currentContext()->makeCurrent(this);
     _madeCurrent = true;
     return true;
-}
-
-void AngleQmlRenderSurface::handleOpenGLContextCreated(QOpenGLContext *context)
-{
-    std::cout << "OpenGL context created: " << context << std::endl;
 }
 
 void AngleQmlRenderSurface::handleBeforeRendering()
@@ -93,6 +84,7 @@ void AngleQmlRenderSurface::handleBeforeRendering()
 
 void AngleQmlRenderSurface::checkError()
 {
+    return;
     QOpenGLFunctions* gl = QOpenGLContext::currentContext()->functions();
     GLenum err = gl->glGetError();
     if(err != GL_NO_ERROR)
@@ -128,33 +120,4 @@ void AngleQmlRenderSurface::checkError()
         std::cout << "Found error: " << gl_error << std::endl;
     }
     std::cout << "No error found." << std::endl;
-}
-
-void AngleQmlRenderSurface::createNewGLContext()
-{
-    QOpenGLContext::currentContext()->makeCurrent(0);
-    EGLDisplay display;
-    EGLConfig config;
-    EGLContext context;
-    EGLSurface surface;
-    NativeWindowType native_window;
-    EGLint num_config;
-    /* get an EGL display connection */
-    display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-    /* initialize the EGL display connection */
-    eglInitialize(display, NULL, NULL);
-    /* get an appropriate EGL frame buffer configuration */
-    eglChooseConfig(display, attribute_list, &config, 1, &num_config);
-//    /* create an EGL rendering context */
-    context = eglCreateContext(display, config, EGL_NO_CONTEXT, NULL);
-//    /* create a native window */
-//    /* create an EGL window surface */
-    surface = eglCreateWindowSurface(display, config, (EGLNativeWindowType)this->winId(), NULL);
-//    /* connect the context to the surface */
-    //eglMakeCurrent(display, surface, surface, context);
-//    /* clear the color buffer */
-    QEGLNativeContext ctx(context, display);
-    QOpenGLContext::currentContext()->setNativeHandle(QVariant::fromValue<QEGLNativeContext>(ctx));
-    bool success = QOpenGLContext::currentContext()->create();
-    QOpenGLContext::currentContext()->makeCurrent(this);
 }

@@ -18,7 +18,6 @@ public:
     bool makeCurrent();
 
 public slots:
-    void handleOpenGLContextCreated(QOpenGLContext *context);
     void handleBeforeRendering();
 
 private:
