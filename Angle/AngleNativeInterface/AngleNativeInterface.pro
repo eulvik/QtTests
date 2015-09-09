@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets
+QT       += gui opengl
 
 ARCH_EXT=64
 
@@ -13,7 +13,6 @@ TEMPLATE = lib
 
 DEFINES += ANGLENATIVEINTERFACE_LIBRARY
 
-LIBS += -llibEGL
 INCLUDEPATH += $$[QT_INSTALL_PREFIX]/../src/qtbase/src/3rdparty/angle/src
 
 SOURCES += anglenativeinterface.cpp \

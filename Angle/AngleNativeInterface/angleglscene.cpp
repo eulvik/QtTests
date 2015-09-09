@@ -7,18 +7,14 @@
 using namespace std;
 
 AngleGLScene::AngleGLScene(QObject *parent) : QObject(parent),
-    _geometries(0),
-    _texture(0),
-    _angularSpeed(0)
+    _angularSpeed(0),
+    _glContext(NULL)
 {
 }
 
 AngleGLScene::~AngleGLScene()
 {
-    //makeCurrent();
-    delete _texture;
-    delete _geometries;
-    //doneCurrent();
+    _glContext->deleteTexture(_texture);
 }
 
 bool AngleGLScene::mouseMoveEvent(QMouseEvent *e)
@@ -79,19 +75,20 @@ void AngleGLScene::animate()
     }
 }
 
-bool AngleGLScene::initializeGL()
+bool AngleGLScene::initializeGL(QGLContext *glContext)
 {
-    auto gl = QOpenGLContext::currentContext()->functions();
+    _glContext = glContext;
+    initializeGLFunctions();
     initShaders();
     initTextures();
 
     // Enable depth buffer
-    gl->glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 
     // Enable back face culling
-    gl->glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
-    _geometries = new GeometryEngine();
+    _geometries.init();
 
     return true;
 }
@@ -99,11 +96,11 @@ bool AngleGLScene::initializeGL()
 bool AngleGLScene::initShaders()
 {
     // Compile vertex shader
-    if (!_program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
+    if (!_program.addShaderFromSourceFile(QGLShader::Vertex, ":/vshader.glsl"))
         return false;
 
     // Compile fragment shader
-    if (!_program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
+    if (!_program.addShaderFromSourceFile(QGLShader::Fragment, ":/fshader.glsl"))
         return false;
 
     // Link shader pipeline
@@ -120,23 +117,28 @@ bool AngleGLScene::initShaders()
 bool AngleGLScene::initTextures()
 {
     // Load cube.png image
-    _texture = new QOpenGLTexture(QImage(":/cube.png").mirrored());
+    glEnable(GL_TEXTURE_2D);
+    _texture = _glContext->bindTexture(QImage(":/maria.png"));
 
     // Set nearest filtering mode for texture minification
-    _texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     // Set bilinear filtering mode for texture magnification
-    _texture->setMagnificationFilter(QOpenGLTexture::Linear);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Wrap texture coordinates by repeating
     // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-    _texture->setWrapMode(QOpenGLTexture::Repeat);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     return true;
 }
 
 void AngleGLScene::resizeGL(int w, int h)
 {
+    // Set OpenGL viewport to cover whole widget
+    glViewport(0, 0, w, h);
+
     // Calculate aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
@@ -152,11 +154,11 @@ void AngleGLScene::resizeGL(int w, int h)
 
 void AngleGLScene::render()
 {
-    auto gl = QOpenGLContext::currentContext()->functions();
-    // Clear color and depth buffer
-    gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _texture->bind();
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+    // Clear color and depth buffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Calculate model view transformation
     QMatrix4x4 matrix;
@@ -170,5 +172,5 @@ void AngleGLScene::render()
     _program.setUniformValue("texture", 0);
 
     // Draw cube geometry
-    _geometries->drawCubeGeometry(&_program);
+    _geometries.drawCubeGeometry(&_program);
 }

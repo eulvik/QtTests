@@ -3,29 +3,23 @@
 #include <QMouseEvent>
 #include <math.h>
 
-AngleGLWidget::AngleGLWidget(QWidget *parent) :
-    QOpenGLWidget(parent),
-    geometries(0),
-    texture(0),
-    angularSpeed(0)
+AngleGLScene::AngleGLScene(QWidget *parent) :
+    QGLWidget(parent), angularSpeed(0)
 {
 }
 
-AngleGLWidget::~AngleGLWidget()
+AngleGLScene::~AngleGLScene()
 {
-    makeCurrent();
-    delete texture;
-    delete geometries;
-    doneCurrent();
+    deleteTexture(texture);
 }
 
-void AngleGLWidget::mousePressEvent(QMouseEvent *e)
+void AngleGLScene::mousePressEvent(QMouseEvent *e)
 {
     // Save mouse press position
     mousePressPosition = QVector2D(e->localPos());
 }
 
-void AngleGLWidget::mouseReleaseEvent(QMouseEvent *e)
+void AngleGLScene::mouseReleaseEvent(QMouseEvent *e)
 {
     // Mouse release position - mouse press position
     QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
@@ -44,7 +38,7 @@ void AngleGLWidget::mouseReleaseEvent(QMouseEvent *e)
     angularSpeed += acc;
 }
 
-void AngleGLWidget::timerEvent(QTimerEvent *)
+void AngleGLScene::simulate(QTimerEvent *)
 {
     // Decrease angular speed (friction)
     angularSpeed *= 0.99;
@@ -56,17 +50,15 @@ void AngleGLWidget::timerEvent(QTimerEvent *)
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
 
-        // Request an update
-        update();
+        // Update scene
+        updateGL();
     }
 }
 
-void AngleGLWidget::initializeGL()
+void AngleGLScene::initializeGL()
 {
-    initializeOpenGLFunctions();
-
-    glClearColor(0, 0, 0, 1);
-
+    initializeGLFunctions();
+    qglClearColor(Qt::black);
     initShaders();
     initTextures();
 
@@ -76,20 +68,20 @@ void AngleGLWidget::initializeGL()
     // Enable back face culling
     glEnable(GL_CULL_FACE);
 
-    geometries = new GeometryEngine;
+    geometries.init();
 
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
 }
 
-void AngleGLWidget::initShaders()
+void AngleGLScene::initShaders()
 {
     // Compile vertex shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
+    if (!program.addShaderFromSourceFile(QGLShader::Vertex, ":/vshader.glsl"))
         close();
 
     // Compile fragment shader
-    if (!program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
+    if (!program.addShaderFromSourceFile(QGLShader::Fragment, ":/fshader.glsl"))
         close();
 
     // Link shader pipeline
@@ -101,24 +93,29 @@ void AngleGLWidget::initShaders()
         close();
 }
 
-void AngleGLWidget::initTextures()
+void AngleGLScene::initTextures()
 {
     // Load cube.png image
-    texture = new QOpenGLTexture(QImage(":/cube.png").mirrored());
+    glEnable(GL_TEXTURE_2D);
+    texture = bindTexture(QImage(":/cube.png"));
 
     // Set nearest filtering mode for texture minification
-    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     // Set bilinear filtering mode for texture magnification
-    texture->setMagnificationFilter(QOpenGLTexture::Linear);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     // Wrap texture coordinates by repeating
     // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-    texture->setWrapMode(QOpenGLTexture::Repeat);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
-void AngleGLWidget::resizeGL(int w, int h)
+void AngleGLScene::resizeGL(int w, int h)
 {
+    // Set OpenGL viewport to cover whole widget
+    glViewport(0, 0, w, h);
+
     // Calculate aspect ratio
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
@@ -132,12 +129,10 @@ void AngleGLWidget::resizeGL(int w, int h)
     projection.perspective(fov, aspect, zNear, zFar);
 }
 
-void AngleGLWidget::paintGL()
+void AngleGLScene::paintGL()
 {
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    texture->bind();
 
     // Calculate model view transformation
     QMatrix4x4 matrix;
@@ -151,5 +146,5 @@ void AngleGLWidget::paintGL()
     program.setUniformValue("texture", 0);
 
     // Draw cube geometry
-    geometries->drawCubeGeometry(&program);
+    geometries.drawCubeGeometry(&program);
 }

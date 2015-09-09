@@ -1,42 +1,41 @@
 #ifndef ANGLEGLWIDGET_H
 #define ANGLEGLWIDGET_H
 
-#include "geometryengine.h"
-
-#include <QOpenGLWidget>
-#include <QOpenGLFunctions>
+#include <QGLWidget>
+#include <QGLFunctions>
 #include <QMatrix4x4>
 #include <QQuaternion>
 #include <QVector2D>
 #include <QBasicTimer>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLTexture>
+#include <QGLShaderProgram>
 
-class AngleGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
+#include "geometryengine.h"
+
+class AngleGLScene : public QGLWidget, protected QGLFunctions
 {
     Q_OBJECT
 public:
-    explicit AngleGLWidget(QWidget *parent = 0);
-    ~AngleGLWidget();
+    explicit AngleGLScene(QWidget *parent = 0);
+    ~AngleGLScene();
 
 protected:
-    void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-    void timerEvent(QTimerEvent *e) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void simulate(QTimerEvent *e);
 
-    void initializeGL() Q_DECL_OVERRIDE;
-    void resizeGL(int w, int h) Q_DECL_OVERRIDE;
-    void paintGL() Q_DECL_OVERRIDE;
+    void initializeGL();
+    void resizeGL(int w, int h);
+    void paintGL();
 
     void initShaders();
     void initTextures();
 
 private:
     QBasicTimer timer;
-    QOpenGLShaderProgram program;
-    GeometryEngine *geometries;
+    QGLShaderProgram program;
+    GeometryEngine geometries;
 
-    QOpenGLTexture *texture;
+    GLuint texture;
 
     QMatrix4x4 projection;
 
