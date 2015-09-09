@@ -1,4 +1,4 @@
-#include "angleqmlrendersurface.h"
+#include "angleqmlrenderwindow.h"
 
 #include <QTimer>
 #include <QOpenGLContext>
@@ -25,12 +25,12 @@ static EGLint const attribute_list[] = {
         EGL_NONE
 };
 
-AngleQmlRenderSurface::AngleQmlRenderSurface(QQmlEngine *engine, QWindow *parent)
+AngleQmlRenderWindow::AngleQmlRenderWindow(QQmlEngine *engine, QWindow *parent)
     : QQuickView(engine, parent)
 {
 }
 
-AngleQmlRenderSurface::AngleQmlRenderSurface()
+AngleQmlRenderWindow::AngleQmlRenderWindow()
     : QQuickView()
 {
     _madeCurrent = false;
@@ -38,7 +38,7 @@ AngleQmlRenderSurface::AngleQmlRenderSurface()
     connect(this, SIGNAL(beforeRendering()), SLOT(handleBeforeRendering()), Qt::DirectConnection);
 }
 
-IDirect3DSurface9* AngleQmlRenderSurface::getD3DSurfaceHandle()
+IDirect3DSurface9* AngleQmlRenderWindow::getD3DSurfaceHandle()
 {
     std::cout << "Checking error before." << std::endl;
     checkError();
@@ -64,7 +64,7 @@ IDirect3DSurface9* AngleQmlRenderSurface::getD3DSurfaceHandle()
     return swapChainD3D9->getRenderTarget();
 }
 
-bool AngleQmlRenderSurface::makeCurrent()
+bool AngleQmlRenderWindow::makeCurrent()
 {
     if(_madeCurrent)
         return false;
@@ -74,7 +74,7 @@ bool AngleQmlRenderSurface::makeCurrent()
     return true;
 }
 
-void AngleQmlRenderSurface::handleBeforeRendering()
+void AngleQmlRenderWindow::handleBeforeRendering()
 {
     makeCurrent();
     QOpenGLContext *context = QOpenGLContext::currentContext();
@@ -82,7 +82,7 @@ void AngleQmlRenderSurface::handleBeforeRendering()
     getD3DSurfaceHandle();
 }
 
-void AngleQmlRenderSurface::checkError()
+void AngleQmlRenderWindow::checkError()
 {
     return;
     QOpenGLFunctions* gl = QOpenGLContext::currentContext()->functions();

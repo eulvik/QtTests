@@ -3,7 +3,7 @@
 #include <QGuiApplication>
 #include <QUrl>
 
-#include <angleqmlrendersurface.h>
+#include <angleqmlrenderwindow.h>
 #include <iostream>
 
 int main(int argc, char *argv[])
@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
     //QQmlApplicationEngine engine;
-    AngleQmlRenderSurface surf;//
+    AngleQmlRenderWindow surf;//
 
     //QSurfaceFormat f = surf->format();
     //f.setRenderableType(QSurfaceFormat::OpenGLES);

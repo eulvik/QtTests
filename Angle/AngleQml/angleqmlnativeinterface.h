@@ -5,7 +5,7 @@
 #include <windows.h>
 
 class QGuiApplication;
-class AngleQmlRenderSurface;
+class AngleQmlRenderWindow;
 
 class ANGLEQMLSHARED_EXPORT AngleQmlNativeInterface
 {
@@ -20,7 +20,7 @@ public:
 
 private:
     QGuiApplication *_application;
-    AngleQmlRenderSurface *_renderSurface;
+    AngleQmlRenderWindow *_renderSurface;
 
     int _width, _height;
 

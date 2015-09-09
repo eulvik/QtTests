@@ -21,9 +21,10 @@ DEFINES += ANGLEQML_LIBRARY
 SOURCES += angleqmlrendersurface.cpp \
     angleqmlnativeinterface.cpp
 
-HEADERS += angleqmlrendersurface.h\
+HEADERS +=\
         angleqml_global.h \
-    angleqmlnativeinterface.h
+    angleqmlnativeinterface.h \
+    angleqmlrenderwindow.h
 
 unix {
     target.path = /usr/lib
