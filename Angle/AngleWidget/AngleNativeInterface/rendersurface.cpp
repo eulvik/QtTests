@@ -17,33 +17,41 @@
 #include <EGL/eglext.h>
 #endif
 
+#include <iostream>
+using namespace std;
+
 #define __STR2__(x) #x
 #define __STR1__(x) __STR2__(x)
 #define __LOC__ __FILE__ "("__STR1__(__LINE__)") : warning X0000: "
 
-RenderSurface::RenderSurface(QWindow* parent)
-    : QWindow(parent), _context(NULL)
+RenderSurface::RenderSurface(QWindow* parent, QOpenGLContext *context)
+    : QWindow(parent), QOpenGLFunctions(context), _context(context)
 {
     setSurfaceType(QWindow::OpenGLSurface);
 }
 
-bool RenderSurface::createGraphicsContext()
-{
-    if (!isExposed())
-        return false;
+//bool RenderSurface::createGraphicsContext()
+//{
+//    cout << "createGraphicsContext, isExposed() = " << isExposed() << endl;
+//    if (!isExposed())
+//        return false;
 
-    _context = new QOpenGLContext(this);
-    _context->setFormat(requestedFormat());
-    _context->create();
+//    _context = new QOpenGLContext(this);
+//    cout << "Context newed " << _context << endl;
+//    _context->setFormat(requestedFormat());
+//    _context->create();
+//    cout << "Context created" << endl;
+//    _context->makeCurrent(this);
+//    cout << "Context made current" << endl;
 
-    _context->makeCurrent(this);
+//    initializeOpenGLFunctions();
 
-    initializeOpenGLFunctions();
 
-    setVisible(false);
-
-    return true;
-}
+//    cout << "Done initializing openGL functions" << endl;
+//    setVisible(false);
+//    cout << "Done creating graphicsContext" << endl;
+//    return true;
+//}
 
 IDirect3DSurface9* RenderSurface::getD3DSurfaceHandle()
 {
@@ -54,6 +62,7 @@ IDirect3DSurface9* RenderSurface::getD3DSurfaceHandle()
     }
 
 #ifdef QT_OPENGL_ES_2_ANGLE
+    cout << "About to get actual surface" << endl;
     EGLDisplay dpy = eglGetCurrentDisplay();
     EGLBoolean result = eglSwapInterval(dpy, 0);
 

@@ -83,7 +83,8 @@ bool AngleNativeInterface::initializeAngle(HWND hwnd, int width, int height)
 
     // Initialize rendering surface
     QWindow* syswin = QWindow::fromWinId((WId)hwnd);
-    _surf = new RenderSurface(syswin);
+    initializeGL();
+    _surf = new RenderSurface(syswin, _context);
 
     QSurfaceFormat format;
     format.setSamples(16);
@@ -107,7 +108,8 @@ bool AngleNativeInterface::initializeGL()
    glEnable(GL_DEPTH_TEST);
    glEnable(GL_CULL_FACE);
 
-   _glScene->initializeGL(QGLContext::fromOpenGLContext(_surf->glContext()));
+   createGraphicsContext();
+   _glScene->initializeGL(_context);
    _fr_timer.start();
    _gl_initialized = true;
 
@@ -115,6 +117,25 @@ bool AngleNativeInterface::initializeGL()
 }
 
 //===========================================================================
+
+bool AngleNativeInterface::createGraphicsContext()
+{
+    _context = new QOpenGLContext();
+    cout << "Context newed " << _context << endl;
+    _context->setFormat(requestedFormat());
+    _context->create();
+    cout << "Context created" << endl;
+    _context->makeCurrent(this);
+    cout << "Context made current" << endl;
+   initializeOpenGLFunctions();
+
+
+    cout << "Done initializing openGL functions" << endl;
+    setVisible(false);
+    cout << "Done creating graphicsContext" << endl;
+    return true;
+}
+
 
 void AngleNativeInterface::resizeRenderSurface(int width, int height)
 {
@@ -128,6 +149,7 @@ void AngleNativeInterface::resizeRenderSurface(int width, int height)
 
 void* AngleNativeInterface::getBackBufferPointer()
 {
+    cout << "getBackBufferPointer" << endl;
     if(!_surf)
         return NULL;
 
@@ -152,6 +174,7 @@ void* AngleNativeInterface::getBackBufferPointer()
 
 void AngleNativeInterface::renderFrame()
 {
+    cout << "renderFrame" << endl;
     if (_shutdown)
         return;
 

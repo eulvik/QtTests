@@ -2,15 +2,16 @@
 #define ANGLEGLWIDGET_H
 
 #include <QGLWidget>
-#include <QGLFunctions>
+#include <QOpenGLFunctions>
 #include <QMatrix4x4>
 #include <QQuaternion>
 #include <QVector2D>
-#include <QGLShaderProgram>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
 
 #include "geometryengine.h"
 
-class AngleGLScene : public QObject, protected QGLFunctions
+class AngleGLScene : public QObject, protected QOpenGLFunctions
 {
     Q_OBJECT
 
@@ -23,7 +24,7 @@ public:
     bool mouseReleaseEvent(QMouseEvent *e);
     bool mouseWheelEvent(QWheelEvent *e);
 
-    bool initializeGL(QGLContext *glContext);
+    bool initializeGL(QOpenGLContext *glContext);
     void resizeGL(int w, int h);
     void render();
     void animate();
@@ -31,10 +32,10 @@ public:
 private:
     bool initShaders();
     bool initTextures();
-    QGLShaderProgram _program;
+    QOpenGLShaderProgram _program;
     GeometryEngine _geometries;
-    QGLContext* _glContext;
-    GLuint _texture;
+    QOpenGLContext* _glContext;
+    QOpenGLTexture* _texture;
 
     QMatrix4x4 projection;
 

@@ -7,6 +7,7 @@
 #include <string>
 #include "MouseEvent.h"
 #include <QtCore/QElapsedTimer>
+#include <QOpenGLContext>
 
 class QGuiApplication;
 class RenderSurface;
@@ -36,7 +37,7 @@ private:
     QGuiApplication* _app;
     RenderSurface* _surf;
     AngleGLScene* _glScene;
-
+    QOpenGLContext *_context;
     QElapsedTimer _fr_timer;
     int _num_frames;
 
@@ -49,7 +50,7 @@ private:
     bool _gl_initialized;
 
     bool initializeGL();
-    bool createRenderSurface();
+    bool createGraphicsContext();
 };
 
 #endif // ANGLENATIVEINTERFACE_H

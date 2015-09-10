@@ -20,7 +20,7 @@ GeometryEngine::~GeometryEngine()
 
 void GeometryEngine::init()
 {
-    initializeGLFunctions();
+    this->initializeOpenGLFunctions();
 
     // Generate 2 VBOs
     glGenBuffers(2, vboIds);
@@ -98,7 +98,7 @@ void GeometryEngine::initCubeGeometry()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 34 * sizeof(GLushort), indices, GL_STATIC_DRAW);
 }
 
-void GeometryEngine::drawCubeGeometry(QGLShaderProgram *program)
+void GeometryEngine::drawCubeGeometry(QOpenGLShaderProgram *program)
 {
     // Tell OpenGL which VBOs to use
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);

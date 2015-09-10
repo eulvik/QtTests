@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    AngleNativeInterface \
-    AngleHelloWorld
+    AngleNativeInterface
+    #AngleHelloWorld

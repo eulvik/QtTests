@@ -14,7 +14,7 @@ AngleGLScene::AngleGLScene(QObject *parent) : QObject(parent),
 
 AngleGLScene::~AngleGLScene()
 {
-    _glContext->deleteTexture(_texture);
+    delete _texture;
 }
 
 bool AngleGLScene::mouseMoveEvent(QMouseEvent *e)
@@ -75,10 +75,11 @@ void AngleGLScene::animate()
     }
 }
 
-bool AngleGLScene::initializeGL(QGLContext *glContext)
+bool AngleGLScene::initializeGL(QOpenGLContext *glContext)
 {
+    cout << "initializeGL " << glContext << endl;
     _glContext = glContext;
-    initializeGLFunctions();
+    initializeOpenGLFunctions();
     initShaders();
     initTextures();
 
@@ -96,11 +97,11 @@ bool AngleGLScene::initializeGL(QGLContext *glContext)
 bool AngleGLScene::initShaders()
 {
     // Compile vertex shader
-    if (!_program.addShaderFromSourceFile(QGLShader::Vertex, ":/vshader.glsl"))
+    if (!_program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vshader.glsl"))
         return false;
 
     // Compile fragment shader
-    if (!_program.addShaderFromSourceFile(QGLShader::Fragment, ":/fshader.glsl"))
+    if (!_program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fshader.glsl"))
         return false;
 
     // Link shader pipeline
@@ -117,9 +118,9 @@ bool AngleGLScene::initShaders()
 bool AngleGLScene::initTextures()
 {
     // Load cube.png image
-    glEnable(GL_TEXTURE_2D);
-    _texture = _glContext->bindTexture(QImage(":/maria.png"));
-
+//_glContext->bindTexture(QImage(":/maria.png"));
+    _texture = new QOpenGLTexture(QImage(":/maria.png"));
+    _texture->bind();
     // Set nearest filtering mode for texture minification
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 

@@ -15,7 +15,7 @@ protected:
     bool createGraphicsContext();
 
 public:
-    RenderSurface(QWindow* parent);
+    RenderSurface(QWindow* parent, QOpenGLContext *context);
     IDirect3DSurface9 *getD3DSurfaceHandle();
 
     bool makeCurrent();
