@@ -17,6 +17,7 @@
 #include <EGL/eglext.h>
 
 #include <iostream>
+using namespace std;
 
 static EGLint const attribute_list[] = {
         EGL_RED_SIZE, 1,
@@ -26,7 +27,7 @@ static EGLint const attribute_list[] = {
 };
 
 AngleQmlRenderWindow::AngleQmlRenderWindow(QQmlEngine *engine, QWindow *parent)
-    : QQuickView(engine, parent)
+    : QQuickView(engine, parent), _rotation(0)
 {
 }
 
@@ -40,21 +41,17 @@ AngleQmlRenderWindow::AngleQmlRenderWindow()
 
 IDirect3DSurface9* AngleQmlRenderWindow::getD3DSurfaceHandle()
 {
-    std::cout << "Checking error before." << std::endl;
-    checkError();
     EGLDisplay display = eglGetCurrentDisplay();
-    std::cout << "Checking error after." << std::endl;
-    checkError();
 
     if(!display)
     {
-        std::cout << "display is null." << std::endl;
+        cout << "display is null." << endl;
         return NULL;
     }
 
     EGLBoolean result = eglSwapInterval(display, 0);
     if(!result)
-        std::cout << "Unable to set eglSwapInterval" << std::endl;
+        cout << "Unable to set eglSwapInterval" << endl;
 
     EGLSurface sfc = eglGetCurrentSurface(EGL_DRAW);
     egl::Surface* surface = static_cast<egl::Surface*>(sfc);
@@ -77,47 +74,10 @@ bool AngleQmlRenderWindow::makeCurrent()
 void AngleQmlRenderWindow::handleBeforeRendering()
 {
     makeCurrent();
-    QOpenGLContext *context = QOpenGLContext::currentContext();
-    std::cout << "BeforeRendering. GLContext is GLES: " << context->isOpenGLES() << " isValid: " << context->isValid() << std::endl;
     getD3DSurfaceHandle();
-}
+    _rotation += 1;
+    if(_rotation > 360)
+        _rotation = 0;
 
-void AngleQmlRenderWindow::checkError()
-{
-    return;
-    QOpenGLFunctions* gl = QOpenGLContext::currentContext()->functions();
-    GLenum err = gl->glGetError();
-    if(err != GL_NO_ERROR)
-    {
-        std::string gl_error = "GL_NO_ERROR";
-        switch(err)
-        {
-        case GL_INVALID_ENUM:
-            gl_error = "GL_INVALID_ENUM";
-            break;
-
-        case GL_INVALID_VALUE:
-            gl_error = "GL_INVALID_VALUE";
-            break;
-
-        case GL_INVALID_OPERATION:
-            gl_error = "GL_INVALID_OPERATION";
-            break;
-
-        case GL_INVALID_FRAMEBUFFER_OPERATION:
-            gl_error = "GL_INVALID_FRAMEBUFFER_OPERATION";
-            break;
-
-        case GL_OUT_OF_MEMORY:
-            gl_error = "GL_OUT_OF_MEMORY";
-            break;
-
-        default:
-            std::stringstream ss(gl_error);
-            ss << "Unknown error: code = " << (int)err;
-            break;
-        }
-        std::cout << "Found error: " << gl_error << std::endl;
-    }
-    std::cout << "No error found." << std::endl;
+    rotationChanged();
 }

@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="AngleWpf.AngleUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:angleWpf="clr-namespace:AngleWpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <Grid>
+        <Image Name="RenderImage" SizeChanged="RenderImage_OnSizeChanged" Stretch="Fill" Panel.ZIndex="0"
+                MouseMove="RenderImage_OnMouseMove" 
+                MouseDown="RenderImage_OnMouseDown" 
+                MouseUp="RenderImage_OnMouseUp"
+                MouseWheel="RenderImage_OnMouseWheel"
+                MouseEnter="RenderImage_OnMouseEnter"
+                MouseLeave="RenderImage_OnMouseLeave"
+               RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <!-- 
+                Need to flip the image vertically, since the OpenGL coordinate system
+                is positive upwards 
+                -->
+                <ScaleTransform ScaleY="-1.0"></ScaleTransform>
+            </Image.RenderTransform>
+            <Image.Source>
+                <angleWpf:AngleImage x:Name="AngleImage"></angleWpf:AngleImage>
+            </Image.Source>
+        </Image>
+    </Grid>
+</UserControl>

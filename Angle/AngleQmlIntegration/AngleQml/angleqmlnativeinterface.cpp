@@ -4,6 +4,8 @@
 #include <QGuiApplication>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QQmlEngine>
+#include <QQmlContext>
 
 #include "angleqmlrenderwindow.h"
 
@@ -33,7 +35,8 @@ bool AngleQmlNativeInterface::initializeAngle(HWND hwnd, int width, int height)
 
     // Initialize rendering surface
     QWindow* syswin = QWindow::fromWinId((WId)hwnd);
-    _renderSurface = new AngleQmlRenderWindow(NULL, syswin);
+    QQmlEngine *engine = new QQmlEngine();
+    _renderSurface = new AngleQmlRenderWindow(engine, syswin);
 
     QSurfaceFormat format;
     format.setSamples(16);

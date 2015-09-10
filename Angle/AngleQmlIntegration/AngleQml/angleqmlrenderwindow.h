@@ -8,6 +8,7 @@
 class ANGLEQMLSHARED_EXPORT AngleQmlRenderWindow : public QQuickView
 {
     Q_OBJECT
+    Q_PROPERTY(qreal rotation MEMBER _rotation NOTIFY rotationChanged)
 
 public:
     AngleQmlRenderWindow(QQmlEngine *engine, QWindow *parent);
@@ -17,13 +18,16 @@ public:
 
     bool makeCurrent();
 
+signals:
+    void rotationChanged();
+
 public slots:
     void handleBeforeRendering();
 
 private:
     bool _madeCurrent;
-    void checkError();
     void createNewGLContext();
+    float _rotation;
 };
 
 #endif // ANGLEQMLRENDERSURFACE_H

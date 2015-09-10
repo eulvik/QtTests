@@ -18,8 +18,9 @@ Debug:LIBS += -llibEGLd
 
 DEFINES += ANGLEQML_LIBRARY
 
-SOURCES += angleqmlrendersurface.cpp \
-    angleqmlnativeinterface.cpp
+SOURCES += \
+    angleqmlnativeinterface.cpp \
+    angleqmlrenderwindow.cpp
 
 HEADERS +=\
         angleqml_global.h \
@@ -36,3 +37,6 @@ RESOURCES += \
 
 
 DISTFILES += *.qml \
+
+target.path = $$PWD/../lib$${ARCH_EXT}
+INSTALLS += target

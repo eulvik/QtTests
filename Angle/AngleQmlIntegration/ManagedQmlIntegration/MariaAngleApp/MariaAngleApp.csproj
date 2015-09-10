@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5707035B-482B-4322-8809-BD9B685DDA03}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MariaAngleApp</RootNamespace>
+    <AssemblyName>MariaAngleApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="protobuf-net">
+      <HintPath>..\packages\protobuf-net.2.0.0.621\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="TPG.Geo.Proto">
+      <HintPath>..\packages\TPG.Maria.Common.1.4.0.801\lib\net40\TPG.Geo.Proto.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.Contracts">
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.1.4.0.801\lib\net40\TPG.GeoFramework.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.Core">
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.1.4.0.801\lib\net40\TPG.GeoFramework.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.Map.Core">
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.65\lib\net40\TPG.GeoFramework.Map.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.Map.Core.Contracts">
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.65\lib\net40\TPG.GeoFramework.Map.Core.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.MapCatalogServiceClient">
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.65\lib\net40\TPG.GeoFramework.MapCatalogServiceClient.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.MapServiceInterfaces">
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.65\lib\net40\TPG.GeoFramework.MapServiceInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.RasterExport">
+      <HintPath>..\packages\TPG.Maria.Common.1.4.0.801\lib\net40\TPG.GeoFramework.RasterExport.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.GeoUnits">
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.1.4.0.801\lib\net40\TPG.GeoUnits.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.Maria.Common">
+      <HintPath>..\packages\TPG.Maria.Common.1.4.0.801\lib\net40\TPG.Maria.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.Maria.Contracts">
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.1.4.0.801\lib\net40\TPG.Maria.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.Maria.CustomContracts">
+      <HintPath>..\packages\TPG.Maria.CustomLayer.2.0.0.65\lib\net40\TPG.Maria.CustomContracts.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.Maria.CustomLayer">
+      <HintPath>..\packages\TPG.Maria.CustomLayer.2.0.0.65\lib\net40\TPG.Maria.CustomLayer.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.Maria.Internal">
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.1.4.0.801\lib\net40\TPG.Maria.Internal.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.Maria.MapContracts">
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.65\lib\net40\TPG.Maria.MapContracts.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.Maria.MapLayer">
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.65\lib\net40\TPG.Maria.MapLayer.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.Maria.MariaUserControl">
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.1.4.0.801\lib\net40\TPG.Maria.MariaUserControl.dll</HintPath>
+    </Reference>
+    <Reference Include="TPG.ServiceModel">
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.65\lib\net40\TPG.ServiceModel.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AngleHost.xaml.cs">
+      <DependentUpon>AngleHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel.cs" />
+    <Page Include="AngleHost.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CustomLayerViewModelFactory.cs" />
+    <Compile Include="CustomView.cs" />
+    <Compile Include="CustomViewFactory.cs" />
+    <Compile Include="CustomViewModel.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MapViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
