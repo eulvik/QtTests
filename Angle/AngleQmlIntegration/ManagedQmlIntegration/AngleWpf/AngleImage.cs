@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using AngleInteractionMixedMode;
 using AngleWpf.Annotations;
 
 namespace AngleWpf
@@ -13,7 +14,7 @@ namespace AngleWpf
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private AngleMixedModeInterface _angleInteractionAPI;
+		private AngleInterface _angleInteractionAPI;
         private bool _imageSourceValid;
         private Size _newSize;
         private Size _currentSize;
@@ -26,8 +27,6 @@ namespace AngleWpf
         public AngleImage()
         {
             IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
-
-            BeginRenderingScene();
         }
 
         public void ResizeImage(Size newSize)
@@ -88,13 +87,16 @@ namespace AngleWpf
             if (width == 0 || height == 0)
                 return false;
 
-            _angleInteractionAPI = new AngleMixedModeInterface();
+            _angleInteractionAPI = new AngleInterface();
 
             if (!_angleInteractionAPI.IntializeAngle(hwnd, width, height))
             {
                 _angleInteractionAPI = null;
                 return false;
             }
+            _angleInteractionAPI.RenderFrame();
+
+            BeginRenderingScene();
 
             return true;
         }

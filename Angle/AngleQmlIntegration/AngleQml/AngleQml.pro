@@ -38,5 +38,11 @@ RESOURCES += \
 
 DISTFILES += *.qml \
 
-target.path = $$PWD/../lib$${ARCH_EXT}
+DESTDIR = $$PWD/../build/bin
+
+target.path = $$PWD/../build/lib$${ARCH_EXT}
 INSTALLS += target
+
+header_files.files = $$HEADERS
+header_files.path = $$PWD/../build/include
+INSTALLS += header_files

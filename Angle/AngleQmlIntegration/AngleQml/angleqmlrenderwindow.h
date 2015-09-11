@@ -15,8 +15,8 @@ public:
     AngleQmlRenderWindow();
 
     IDirect3DSurface9 *getD3DSurfaceHandle();
-
     bool makeCurrent();
+    void renderOne();
 
 signals:
     void rotationChanged();

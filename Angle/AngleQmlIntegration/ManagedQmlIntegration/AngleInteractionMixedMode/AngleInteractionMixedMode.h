@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <anglenativeinterface.h>
+#include <angleqmlnativeinterface.h>
 #include <msclr/marshal_cppstd.h>
 
 using namespace System;
@@ -14,82 +14,86 @@ using namespace System::Windows::Input;
 namespace AngleInteractionMixedMode 
 {
 
-	public ref class AngleMixedModeInterface
+	public ref class AngleInterface
 	{
 	public:
-		AngleMixedModeInterface(void)
+		AngleInterface(void)
 		{
-			_angleNativeInterface = new AngleNativeInterface();
+			_angleQmlNativeInterface = new AngleQmlNativeInterface();
 		}
 
-		~AngleMixedModeInterface()
+		~AngleInterface()
 		{
 			Shutdown();
-			delete _angleNativeInterface;
-			_angleNativeInterface = NULL;
+			delete _angleQmlNativeInterface;
+			_angleQmlNativeInterface = NULL;
 		}
 
 		void Shutdown()
 		{
-			_angleNativeInterface->shutdown();
+			_angleQmlNativeInterface->shutdown();
 		}
 
 		void Simulate()
 		{
-			_angleNativeInterface->animate();
+			//_angleQmlNativeInterface->animate();
 		}
 
 		bool IntializeAngle(IntPtr ^hwnd, int width, int height)
 		{
 			HWND hwndNative = (HWND) hwnd->ToPointer();
-			return _angleNativeInterface->initializeAngle(hwndNative, width, height);
+			return _angleQmlNativeInterface->initializeAngle(hwndNative, width, height);
 		}
 
 		void RenderFrame()
 		{
-			_angleNativeInterface->renderFrame();
+			_angleQmlNativeInterface->renderFrame();
 		}
 
 		IntPtr GetBackBufferPointer()
 		{
-			void* hwndNative = _angleNativeInterface->getBackBufferPointer();
+			void* hwndNative = _angleQmlNativeInterface->getBackBufferPointer();
 			IntPtr hwndManaged = IntPtr(hwndNative);
 			return hwndManaged;
 		}
 
 		void ResizeRenderSurface(Size newSize)
 		{
-			_angleNativeInterface->resizeRenderSurface(newSize.Width, newSize.Height);
+			_angleQmlNativeInterface->resizeRenderSurface(newSize.Width, newSize.Height);
 		}
 
 		bool MouseMoved(Point position, Point delta, MouseEventArgs ^mouseEventArgs)
 		{
-			MouseEvent ev = _mapMouseEvent(position, delta, mouseEventArgs);
-			return _angleNativeInterface->mouseMoved(ev);
+			//MouseEvent ev = _mapMouseEvent(position, delta, mouseEventArgs);
+			//return _angleQmlNativeInterface->mouseMoved(ev);
+			return true;
 		}
 
 		bool MouseWheel(Point position, MouseWheelEventArgs^ mouseWheelEventArgs)
 		{
-			MouseEvent ev = _mapMouseEvent(position, mouseWheelEventArgs);
-			return _angleNativeInterface->mouseWheel(ev);
+			//MouseEvent ev = _mapMouseEvent(position, mouseWheelEventArgs);
+			//return _angleQmlNativeInterface->mouseWheel(ev);
+			return true;
 		}
 
 		bool MouseDown(Point position, MouseButtonEventArgs ^mouseButtonEventArgs)
 		{
-			MouseEvent& ev = _mapMouseEvent(position, mouseButtonEventArgs);
-			return _angleNativeInterface->mouseDown(ev);
+			//MouseEvent& ev = _mapMouseEvent(position, mouseButtonEventArgs);
+			//return _angleQmlNativeInterface->mouseDown(ev);
+			return true;
 		}
 
 		bool MouseUp(Point position, MouseButtonEventArgs ^mouseButtonEventArgs)
 		{
-			MouseEvent& ev = _mapMouseEvent(position, mouseButtonEventArgs);
-			return _angleNativeInterface->mouseUp(ev);
+			/*MouseEvent& ev = _mapMouseEvent(position, mouseButtonEventArgs);
+			return _angleQmlNativeInterface->mouseUp(ev);*/
+			return true;
 		}
 
 	private:
-		AngleNativeInterface* _angleNativeInterface;
+		AngleQmlNativeInterface* _angleQmlNativeInterface;
 
-		MouseEvent _mapMouseEvent(Point position, MouseButtonEventArgs ^mouseButtonEventArgs)
+		/*MouseEvent _mapMouseEvent(Point position, MouseButtonEventArgs ^mouseButtonEventArgs)
 		{
 			MouseButtonStates& buttonStates = _mapMouseButtonStates(mouseButtonEventArgs);
 
@@ -146,6 +150,6 @@ namespace AngleInteractionMixedMode
 			}
 
 			return MouseButtonStates(leftButtonPressed, middleButtonPressed, rightButtonPressed, button);
-		}
+		}*/
 	};
 }
