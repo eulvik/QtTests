@@ -8,9 +8,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp
 
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../AngleQml/release/ -lAngleQml
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../AngleQml/debug/ -lAngleQml
+LIBS += -L$$PWD/../build/lib$${ARCH_EXT} -lAngleQml
 
 INCLUDEPATH += $$PWD/../AngleQml
 DEPENDPATH += $$PWD/../AngleQml

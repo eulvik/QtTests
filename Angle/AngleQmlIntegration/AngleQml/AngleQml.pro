@@ -20,12 +20,16 @@ DEFINES += ANGLEQML_LIBRARY
 
 SOURCES += \
     angleqmlnativeinterface.cpp \
-    angleqmlrenderwindow.cpp
+    angleqmlrenderwindow.cpp \
+    rendercontrolwindow.cpp \
+    rendercontrolnativeinterface.cpp
 
 HEADERS +=\
         angleqml_global.h \
     angleqmlnativeinterface.h \
-    angleqmlrenderwindow.h
+    angleqmlrenderwindow.h \
+    rendercontrolwindow.h \
+    rendercontrolnativeinterface.h
 
 unix {
     target.path = /usr/lib

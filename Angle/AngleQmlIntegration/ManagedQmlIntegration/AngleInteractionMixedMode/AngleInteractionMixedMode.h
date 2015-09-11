@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <angleqmlnativeinterface.h>
+#include <rendercontrolnativeinterface.h>
 #include <msclr/marshal_cppstd.h>
 
 using namespace System;
@@ -19,7 +19,7 @@ namespace AngleInteractionMixedMode
 	public:
 		AngleInterface(void)
 		{
-			_angleQmlNativeInterface = new AngleQmlNativeInterface();
+			_angleQmlNativeInterface = new RenderControlNativeInterface();
 		}
 
 		~AngleInterface()
@@ -42,7 +42,7 @@ namespace AngleInteractionMixedMode
 		bool IntializeAngle(IntPtr ^hwnd, int width, int height)
 		{
 			HWND hwndNative = (HWND) hwnd->ToPointer();
-			return _angleQmlNativeInterface->initializeAngle(hwndNative, width, height);
+			return _angleQmlNativeInterface->initialize(width, height);
 		}
 
 		void RenderFrame()
@@ -59,7 +59,7 @@ namespace AngleInteractionMixedMode
 
 		void ResizeRenderSurface(Size newSize)
 		{
-			_angleQmlNativeInterface->resizeRenderSurface(newSize.Width, newSize.Height);
+			_angleQmlNativeInterface->resizeSurface(newSize.Width, newSize.Height);
 		}
 
 		bool MouseMoved(Point position, Point delta, MouseEventArgs ^mouseEventArgs)
@@ -91,7 +91,7 @@ namespace AngleInteractionMixedMode
 		}
 
 	private:
-		AngleQmlNativeInterface* _angleQmlNativeInterface;
+		RenderControlNativeInterface* _angleQmlNativeInterface;
 
 		/*MouseEvent _mapMouseEvent(Point position, MouseButtonEventArgs ^mouseButtonEventArgs)
 		{
