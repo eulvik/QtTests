@@ -2,7 +2,7 @@
 #define RENDERCONTROLWINDOW_H
 
 #include <QWindow>
-#include <QTimer>
+#include <QMatrix4x4>
 
 #include "angleqml_global.h"
 
@@ -45,6 +45,7 @@ private slots:
 
 private:
     void updateSizes();
+	void setupVertexAttribs();
 
     QOpenGLContext *_openGLContext;
     QOffscreenSurface *_offscreenSurface;
@@ -56,6 +57,11 @@ private:
     QOpenGLFramebufferObject *_fbo;
     bool _quickInitialized;
     bool _quickReady;
+	QOpenGLVertexArrayObject *_vertexArrayObject;
+	QOpenGLBuffer *_vertexBufferObject;
+	QOpenGLShaderProgram *_shaderProgram;
+	int _matrixLoc;
+	QMatrix4x4 _projMatrix;
 };
 
 #endif // RENDERCONTROLWINDOW_H
