@@ -27,6 +27,10 @@ public:
     ~RenderControlWindow();
 
     void startQuick(const QString &filename);
+	bool isReady() { return _quickInitialized; }
+	bool makeCurrent();
+
+public slots:
     void updateQuick();
 
 protected:

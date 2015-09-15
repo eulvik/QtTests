@@ -4,50 +4,63 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLShaderProgram>
-#include <QOpenGLVertexArrayObject>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
 #include <QOffscreenSurface>
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QQuickRenderControl>
-#include <QCoreApplication>
+#include <iostream>
+
+using namespace std;
 
 RenderControlWindow::RenderControlWindow()
-    : _rootItem(0),
-      _fbo(0),
+    : _rootItem(nullptr),
+      _fbo(nullptr),
       _quickInitialized(false),
       _quickReady(false)
 {
+	cout << "Cunstructor RenderControlWindow." << endl;
     setSurfaceType(QSurface::OpenGLSurface);
 
     QSurfaceFormat format;
     // Qt Quick may need a depth and stencil buffer. Always make sure these are available.
     format.setDepthBufferSize(16);
     format.setStencilBufferSize(8);
+
+	cout << "Setting format." << endl;
     setFormat(format);
 
+	cout << "Constructing OpenGLContext" << endl;
     _openGLContext = new QOpenGLContext;
+
+	cout << "Setting OpenGLContext format." << endl;
     _openGLContext->setFormat(format);
+
+	cout << "_openGLContext->create()" << endl;
     _openGLContext->create();
 
+	cout << "Constructing QOffscreenSurface." << endl;
     _offscreenSurface = new QOffscreenSurface;
     // Pass m_context->format(), not format. Format does not specify and color buffer
     // sizes, while the context, that has just been created, reports a format that has
     // these values filled in. Pass this to the offscreen surface to make sure it will be
     // compatible with the context's configuration.
     _offscreenSurface->setFormat(_openGLContext->format());
+
+	cout << "_offscreenSurface->create()" << endl;
     _offscreenSurface->create();
 
+	cout << "Constructing QQuickRenderControl." << endl;
     _renderControl = new QQuickRenderControl(this);
 
     // Create a QQuickWindow that is associated with out render control. Note that this
     // window never gets created or shown, meaning that it will never get an underlying
     // native (platform) window.
+	cout << "Constructing QQuickWindow" << endl;
     _quickWindow = new QQuickWindow(_renderControl);
 
+	cout << "Constructing QQmlEngine" << endl;
     // Create a QML engine.
     _qmlEngine = new QQmlEngine;
     if (!_qmlEngine->incubationController())
@@ -56,10 +69,11 @@ RenderControlWindow::RenderControlWindow()
     // Now hook up the signals. For simplicy we don't differentiate between
     // renderRequested (only render is needed, no sync) and sceneChanged (polish and sync
     // is needed too).
+	cout << "Connecting signals/slots" << endl;
     connect(_quickWindow, &QQuickWindow::sceneGraphInitialized, this, &RenderControlWindow::createFbo);
     connect(_quickWindow, &QQuickWindow::sceneGraphInvalidated, this, &RenderControlWindow::destroyFbo);
-    connect(_renderControl, &QQuickRenderControl::renderRequested, this, &RenderControlWindow::updateQuick);
-    connect(_renderControl, &QQuickRenderControl::sceneChanged, this, &RenderControlWindow::updateQuick);
+    //connect(_renderControl, &QQuickRenderControl::renderRequested, this, &RenderControlWindow::updateQuick);
+    //connect(_renderControl, &QQuickRenderControl::sceneChanged, this, &RenderControlWindow::updateQuick);
 }
 
 RenderControlWindow::~RenderControlWindow()
@@ -87,26 +101,29 @@ RenderControlWindow::~RenderControlWindow()
 
 void RenderControlWindow::createFbo()
 {
+	cout << "RenderControlWindow::createFbo()" << endl;
     // The scene graph has been initialized. It is now time to create an FBO and associate
     // it with the QQuickWindow.
     _fbo = new QOpenGLFramebufferObject(size() * devicePixelRatio(), QOpenGLFramebufferObject::CombinedDepthStencil);
     _quickWindow->setRenderTarget(_fbo);
+	cout << "done RenderControlWindow::createFbo()" << endl;
 }
 
 void RenderControlWindow::destroyFbo()
 {
     delete _fbo;
-    _fbo = 0;
+    _fbo = nullptr;
 }
 
 void RenderControlWindow::run()
 {
+	cout << "RenderControlWindow::run()" << endl;
     disconnect(_qmlComponent, SIGNAL(statusChanged(QQmlComponent::Status)), this, SLOT(run()));
 
     if (_qmlComponent->isError()) {
         QList<QQmlError> errorList = _qmlComponent->errors();
-        foreach (const QQmlError &error, errorList)
-            qWarning() << error.url() << error.line() << error;
+		foreach(const QQmlError &error, errorList)
+			cout << "errorUrl: " << error.url().url().toStdString() << " errorLine=" << error.line() << " errorMessage= " << error.description().toStdString() << endl;;
         return;
     }
 
@@ -114,13 +131,13 @@ void RenderControlWindow::run()
     if (_qmlComponent->isError()) {
         QList<QQmlError> errorList = _qmlComponent->errors();
         foreach (const QQmlError &error, errorList)
-            qWarning() << error.url() << error.line() << error;
+			cout << "errorUrl: " << error.url().url().toStdString() << " errorLine=" << error.line() << " errorMessage= " << error.description().toStdString() << endl;;
         return;
     }
 
     _rootItem = qobject_cast<QQuickItem *>(rootObject);
     if (!_rootItem) {
-        qWarning("run: Not a QQuickItem");
+		cout << "run: Not a QQuickItem" << endl;
         delete rootObject;
         return;
     }
@@ -137,6 +154,7 @@ void RenderControlWindow::run()
 
     _openGLContext->doneCurrent();
     _quickInitialized = true;
+	cout << "RenderControlWindow::run() finished" << endl;
 }
 
 void RenderControlWindow::updateSizes()
@@ -150,19 +168,27 @@ void RenderControlWindow::updateSizes()
 
 void RenderControlWindow::startQuick(const QString &filename)
 {
-    _qmlComponent = new QQmlComponent(_qmlEngine, QUrl(filename));
-    if (_qmlComponent->isLoading())
-        connect(_qmlComponent, &QQmlComponent::statusChanged, this, &RenderControlWindow::run);
-    else
-        run();
+	cout << "Starting quick" << endl;
+	_qmlComponent = new QQmlComponent(_qmlEngine, QUrl(filename));
+	if (_qmlComponent->isLoading())
+	{
+		cout << "RenderControlWindow::startQuick isLoading()" << endl;
+		connect(_qmlComponent, &QQmlComponent::statusChanged, this, &RenderControlWindow::run);
+	}
+	else
+	{
+		cout << "RenderControlWindow::startQuick Direct run" << endl;
+		run();
+	}
 }
 
 void RenderControlWindow::exposeEvent(QExposeEvent *)
 {
+	std::cout << "exposeEvent called." << endl;
     if (isExposed()) {
         render();
         if (!_quickInitialized)
-            startQuick(QStringLiteral("qrc:/rendercontrol/demo.qml"));
+            startQuick(QStringLiteral("qrc:/main.qml"));
     }
 }
 
@@ -178,24 +204,42 @@ void RenderControlWindow::resizeEvent(QResizeEvent *)
     }
 }
 
+bool RenderControlWindow::makeCurrent()
+{
+	if (!isReady())
+		return false;
+
+	return _openGLContext->makeCurrent(_offscreenSurface);
+}
+
 void RenderControlWindow::updateQuick()
 {
+	cout << "RenderControlWindow::updateQuick()" << endl;
     if (!_openGLContext->makeCurrent(_offscreenSurface))
         return;
+
+	cout << "Made OpenGLContext current. " << endl;
 
     // Polish, synchronize and render the next frame (into our fbo).  In this example
     // everything happens on the same thread and therefore all three steps are performed
     // in succession from here. In a threaded setup the render() call would happen on a
     // separate thread.
+	cout << "_renderControl->polishItems()" << endl;
     _renderControl->polishItems();
+	cout << "_renderControl->sync()" << endl;
     _renderControl->sync();
+	cout << "_renderControl->render()" << endl;
     _renderControl->render();
 
+	cout << "_quickWindow->resetOpenGLState();" << endl;
     _quickWindow->resetOpenGLState();
+
+	cout << "QOpenGLFramebufferObject::bindDefault();" << endl;
     QOpenGLFramebufferObject::bindDefault();
 
     _quickReady = true;
 
+	cout << "render()" << endl;
     // Get something onto the screen.
     render();
 }

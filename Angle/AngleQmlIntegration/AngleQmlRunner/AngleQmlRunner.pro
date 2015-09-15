@@ -5,7 +5,7 @@ CONFIG -= app_bundle
 
 ARCH_EXT=64
 TEMPLATE = app
-
+DESTDIR = $$PWD/../build/bin
 SOURCES += main.cpp
 
 LIBS += -L$$PWD/../build/lib$${ARCH_EXT} -lAngleQml

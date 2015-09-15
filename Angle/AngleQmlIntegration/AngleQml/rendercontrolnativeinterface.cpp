@@ -38,15 +38,23 @@ bool RenderControlNativeInterface::initialize(int width, int height)
     if(_initialized)
         return true;
 
+	cout << "Creating RendeControlWindow." << endl;
     _controlWindow = new RenderControlWindow();
+	cout << "Resizing surface." << endl;
     resizeSurface(width, height);
     _initialized = true;
+
+	cout << "Showing window" << endl;
+	_controlWindow->show();
+	cout << "Done initializing" << endl;
     return true;
 }
 
 void RenderControlNativeInterface::renderFrame()
 {
-    if(!_controlWindow)
+	bool ready = _controlWindow->isReady();
+	cout << "RenderControlNativeInterface::renderFrame(). Ready: " << ready << endl;
+    if(!_controlWindow || !ready)
         return;
 
     _controlWindow->updateQuick();
@@ -54,34 +62,37 @@ void RenderControlNativeInterface::renderFrame()
 
 void *RenderControlNativeInterface::getBackBufferPointer()
 {
-    cout << "getBackBufferPointer() called. _renderSurface" << _controlWindow << endl;
-    if(!_controlWindow)
-        return NULL;
+    //cout << "getBackBufferPointer() called. _controlWindow" << _controlWindow <<  " initialized: " << _initialized << endl;
+    if(!_controlWindow || !_controlWindow->isReady())
+        return nullptr;
 
     if(_initialized)
     {
+		cout << "_width=" << _width << " width=" << _controlWindow->width() << " _height=" << _height << " height=" << _controlWindow->height() << endl;
         if(_width != _controlWindow->width() || _height != _controlWindow->height())
         {
             resizeSurface(_width, _height);
         }
     }
 
-    cout << "Doing actual back buffer poiner call." << endl;
+    
+	if (!_controlWindow->makeCurrent())
+		return nullptr;
 
-    cout << "getD3DSurfaceHandle called" << endl;
-
+	cout << "eglGetCurrentDisplay();" << endl;
     EGLDisplay display = eglGetCurrentDisplay();
 
     if(!display)
     {
         cout << "display is null." << endl;
-        return NULL;
+        return nullptr;
     }
-    else
-        cout << "Found actual display" << endl;
+        
+	cout << "Found actual display" << endl;
 
     EGLBoolean result = eglSwapInterval(display, 0);
-    if(!result)
+    
+	if(!result)
         cout << "Unable to set eglSwapInterval" << endl;
     else
         cout << "Managed to swap" << endl;
