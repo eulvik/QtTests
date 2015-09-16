@@ -12,6 +12,7 @@
 #include <QQuickRenderControl>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
+#include <QQmlContext>
 #include <iostream>
 
 using namespace std;
@@ -20,10 +21,15 @@ RenderControlWindow::RenderControlWindow()
 	: _rootItem(nullptr),
 	_fbo(nullptr),
 	_quickInitialized(false),
-	_quickReady(false)
+    _quickReady(false),
+    _rotation(0)
 {
-	cout << "Cunstructor RenderControlWindow." << endl;
+    Q_INIT_RESOURCE(qml);
+
+    cout << "Constructor RenderControlWindow." << endl;
 	setSurfaceType(QSurface::OpenGLSurface);
+
+
 
 	QSurfaceFormat format;
 	// Qt Quick may need a depth and stencil buffer. Always make sure these are available.
@@ -68,14 +74,19 @@ RenderControlWindow::RenderControlWindow()
 	if (!_qmlEngine->incubationController())
 		_qmlEngine->setIncubationController(_quickWindow->incubationController());
 
+	_qmlEngine->rootContext()->setContextProperty("vm", this);
+    _updateTimer.setInterval(16);
+    _updateTimer.setSingleShot(true);
+    connect(&_updateTimer, &QTimer::timeout, this, &RenderControlWindow::realUpdateQuick);
+
 	// Now hook up the signals. For simplicy we don't differentiate between
 	// renderRequested (only render is needed, no sync) and sceneChanged (polish and sync
 	// is needed too).
 	cout << "Connecting signals/slots" << endl;
 	connect(_quickWindow, &QQuickWindow::sceneGraphInitialized, this, &RenderControlWindow::createFbo);
 	connect(_quickWindow, &QQuickWindow::sceneGraphInvalidated, this, &RenderControlWindow::destroyFbo);
-	//connect(_renderControl, &QQuickRenderControl::renderRequested, this, &RenderControlWindow::updateQuick);
-	//connect(_renderControl, &QQuickRenderControl::sceneChanged, this, &RenderControlWindow::updateQuick);
+//    connect(_renderControl, &QQuickRenderControl::renderRequested, this, &RenderControlWindow::updateQuick);
+//    connect(_renderControl, &QQuickRenderControl::sceneChanged, this, &RenderControlWindow::updateQuick);
 }
 
 RenderControlWindow::~RenderControlWindow()
@@ -114,13 +125,49 @@ void RenderControlWindow::createFbo()
 void RenderControlWindow::destroyFbo()
 {
 	delete _fbo;
-	_fbo = nullptr;
+    _fbo = nullptr;
+}
+
+void RenderControlWindow::realUpdateQuick()
+{
+    if(!isReady())
+        return;
+
+//    cout << "RenderControlWindow::realUpdateQuick()" << endl;
+    if (!_openGLContext->makeCurrent(_offscreenSurface))
+        return;
+
+//    cout << "Made OpenGLContext current. " << endl;
+
+//    cout << "_renderControl->polishItems()" << endl;
+    _renderControl->polishItems();
+
+//    cout << "_renderControl->sync()" << endl;
+    _renderControl->sync();
+
+//    cout << "_renderControl->render()" << endl;
+    _renderControl->render();
+
+//    cout << "_quickWindow->resetOpenGLState();" << endl;
+    _quickWindow->resetOpenGLState();
+
+//    cout << "QOpenGLFramebufferObject::bindDefault();" << endl;
+    QOpenGLFramebufferObject::bindDefault();
+
+    _quickReady = true;
+
+//    cout << "render()" << endl;
+
+    render();
 }
 
 void RenderControlWindow::run()
 {
 	cout << "RenderControlWindow::run()" << endl;
 	disconnect(_qmlComponent, SIGNAL(statusChanged(QQmlComponent::Status)), this, SLOT(run()));
+
+    if(_quickInitialized)
+        return;
 
 	if (_qmlComponent->isError()) {
 		QList<QQmlError> errorList = _qmlComponent->errors();
@@ -168,7 +215,7 @@ void RenderControlWindow::run()
 		"varying lowp vec2 v_coord;\n"
 		"uniform sampler2D sampler;\n"
 		"void main() {\n"
-		"   gl_FragColor = vec4(texture2D(sampler, v_coord).rgb, 1.0);\n"
+		"   gl_FragColor = vec4(texture2D(sampler, v_coord).rgb, 0.5);\n"
 		"}\n";
 
 	_shaderProgram = new QOpenGLShaderProgram;
@@ -222,7 +269,6 @@ void RenderControlWindow::run()
 
 	// Initialize the render control and our OpenGL resources.
 	_openGLContext->makeCurrent(_offscreenSurface);
-	_renderControl->initialize(_openGLContext);
 
 	_openGLContext->doneCurrent();
 	_quickInitialized = true;
@@ -236,8 +282,8 @@ void RenderControlWindow::updateSizes()
 	_rootItem->setHeight(height());
 
 	_projMatrix.setToIdentity();
-	QRect rect(0, 0, width(), height());
-	_projMatrix.ortho(rect);
+//	QRect rect(0, 0, width(), height());
+//	_projMatrix.ortho(rect);
 
 	_quickWindow->setGeometry(0, 0, width(), height());
 }
@@ -248,14 +294,29 @@ void RenderControlWindow::setupVertexAttribs()
 	_shaderProgram->enableAttributeArray(0);
 	_shaderProgram->enableAttributeArray(1);
 	_openGLContext->functions()->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	_openGLContext->functions()->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (const void *)(36 * 3 * sizeof(GLfloat)));
+    _openGLContext->functions()->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (const void *)(6 * 3 * sizeof(GLfloat)));
 	_vertexBufferObject->release();
+}
+
+float RenderControlWindow::rotation() const
+{
+    return _rotation;
+}
+
+void RenderControlWindow::setRotation(float rotation)
+{
+    if(rotation > 360)
+        _rotation = 0;
+    else
+        _rotation = rotation;
+
+    rotationChanged();
 }
 
 void RenderControlWindow::startQuick(const QString &filename)
 {
-	cout << "Starting quick" << endl;
-	_qmlComponent = new QQmlComponent(_qmlEngine, QUrl(filename));
+    cout << "Starting quick" << endl;
+    _qmlComponent = new QQmlComponent(_qmlEngine, QUrl(filename));
 	if (_qmlComponent->isLoading())
 	{
 		cout << "RenderControlWindow::startQuick isLoading()" << endl;
@@ -272,7 +333,7 @@ void RenderControlWindow::exposeEvent(QExposeEvent *)
 {
 	std::cout << "exposeEvent called." << endl;
 	if (isExposed()) {
-		render();
+        render();
 		if (!_quickInitialized)
 			startQuick(QStringLiteral("qrc:/main.qml"));
 	}
@@ -295,39 +356,13 @@ bool RenderControlWindow::makeCurrent()
 	if (!isReady())
 		return false;
 
-	return _openGLContext->makeCurrent(_offscreenSurface);
+	return _openGLContext->makeCurrent(this);
 }
 
 void RenderControlWindow::updateQuick()
 {
-	cout << "RenderControlWindow::updateQuick()" << endl;
-	if (!_openGLContext->makeCurrent(_offscreenSurface))
-		return;
-
-	cout << "Made OpenGLContext current. " << endl;
-
-	// Polish, synchronize and render the next frame (into our fbo).  In this example
-	// everything happens on the same thread and therefore all three steps are performed
-	// in succession from here. In a threaded setup the render() call would happen on a
-	// separate thread.
-	cout << "_renderControl->polishItems()" << endl;
-	_renderControl->polishItems();
-	cout << "_renderControl->sync()" << endl;
-	_renderControl->sync();
-	cout << "_renderControl->render()" << endl;
-	_renderControl->render();
-
-	cout << "_quickWindow->resetOpenGLState();" << endl;
-	_quickWindow->resetOpenGLState();
-
-	cout << "QOpenGLFramebufferObject::bindDefault();" << endl;
-	QOpenGLFramebufferObject::bindDefault();
-
-	_quickReady = true;
-
-	cout << "render()" << endl;
-	// Get something onto the screen.
-	render();
+    if(!_updateTimer.isActive())
+        _updateTimer.start();
 }
 
 void RenderControlWindow::render()
@@ -335,8 +370,9 @@ void RenderControlWindow::render()
 	if (!_openGLContext->makeCurrent(this))
 		return;
 
+    setRotation(_rotation + 1);
 	QOpenGLFunctions *f = _openGLContext->functions();
-	f->glClearColor(0.0f, 0.1f, 0.25f, 1.0f);
+    f->glClearColor(1.0f, 0.0f, 0.0f, 0.5f);
 	f->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (_quickReady) {
@@ -346,7 +382,6 @@ void RenderControlWindow::render()
 
 		f->glBindTexture(GL_TEXTURE_2D, _fbo->texture());
 
-		//TODO
 		_shaderProgram->bind();
 		QOpenGLVertexArrayObject::Binder vaoBinder(_vertexArrayObject);
 		// If VAOs are not supported, set the vertex attributes every time.

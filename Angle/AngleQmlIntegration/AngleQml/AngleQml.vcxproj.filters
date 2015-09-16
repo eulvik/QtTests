@@ -37,12 +37,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="angleqmlnativeinterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="angleqmlrenderwindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="rendercontrolnativeinterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,12 +48,6 @@
     <ClInclude Include="angleqml_global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="angleqmlnativeinterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <CustomBuild Include="angleqmlrenderwindow.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <ClInclude Include="rendercontrolnativeinterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -68,12 +56,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="debug\moc_angleqmlrenderwindow.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_angleqmlrenderwindow.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="debug\moc_rendercontrolwindow.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>

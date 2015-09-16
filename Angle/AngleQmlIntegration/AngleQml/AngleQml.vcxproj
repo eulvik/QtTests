@@ -135,24 +135,11 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="angleqmlnativeinterface.cpp" />
-    <ClCompile Include="angleqmlrenderwindow.cpp" />
     <ClCompile Include="rendercontrolnativeinterface.cpp" />
     <ClCompile Include="rendercontrolwindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="angleqml_global.h" />
-    <ClInclude Include="angleqmlnativeinterface.h" />
-    <CustomBuild Include="angleqmlrenderwindow.h">
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">angleqmlrenderwindow.h;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">setlocal&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;C:\Qt\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DANGLEQML_LIBRARY -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -D_WIN64 -IC:/Qt/5.4/msvc2013_64/mkspecs/win32-msvc2013 -IC:/git/QtTests/Angle/AngleQmlIntegration/AngleQml -IC:/Qt/5.4/src/qtbase/src/3rdparty/angle/src -IC:/Qt/5.4/msvc2013_64/include -IC:/Qt/5.4/msvc2013_64/include/QtQuick -IC:/Qt/5.4/msvc2013_64/include/QtGui -IC:/Qt/5.4/msvc2013_64/include/QtANGLE -IC:/Qt/5.4/msvc2013_64/include/QtQml -IC:/Qt/5.4/msvc2013_64/include/QtNetwork -IC:/Qt/5.4/msvc2013_64/include/QtCore angleqmlrenderwindow.h -o release\moc_angleqmlrenderwindow.cpp&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;endlocal</Command>
-      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">MOC angleqmlrenderwindow.h</Message>
-      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">release\moc_angleqmlrenderwindow.cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">angleqmlrenderwindow.h;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">setlocal&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;C:\Qt\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DANGLEQML_LIBRARY -DQT_QUICK_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -D_WIN64 -IC:/Qt/5.4/msvc2013_64/mkspecs/win32-msvc2013 -IC:/git/QtTests/Angle/AngleQmlIntegration/AngleQml -IC:/Qt/5.4/src/qtbase/src/3rdparty/angle/src -IC:/Qt/5.4/msvc2013_64/include -IC:/Qt/5.4/msvc2013_64/include/QtQuick -IC:/Qt/5.4/msvc2013_64/include/QtGui -IC:/Qt/5.4/msvc2013_64/include/QtANGLE -IC:/Qt/5.4/msvc2013_64/include/QtQml -IC:/Qt/5.4/msvc2013_64/include/QtNetwork -IC:/Qt/5.4/msvc2013_64/include/QtCore angleqmlrenderwindow.h -o debug\moc_angleqmlrenderwindow.cpp&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;endlocal</Command>
-      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">MOC angleqmlrenderwindow.h</Message>
-      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">debug\moc_angleqmlrenderwindow.cpp;%(Outputs)</Outputs>
-    </CustomBuild>
     <ClInclude Include="rendercontrolnativeinterface.h" />
     <CustomBuild Include="rendercontrolwindow.h">
       <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">rendercontrolwindow.h;%(AdditionalInputs)</AdditionalInputs>
@@ -166,12 +153,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="debug\moc_angleqmlrenderwindow.cpp">
-      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="release\moc_angleqmlrenderwindow.cpp">
-      <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|x64&apos;">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="debug\moc_rendercontrolwindow.cpp">
       <ExcludedFromBuild Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|x64&apos;">true</ExcludedFromBuild>
     </ClCompile>

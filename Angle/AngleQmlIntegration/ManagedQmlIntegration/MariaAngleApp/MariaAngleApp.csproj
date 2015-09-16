@@ -50,75 +50,115 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="TPG.Geo.Proto, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.Common.2.0.0.67\lib\net40\TPG.Geo.Proto.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.Common.2.0.0.70\lib\net40\TPG.Geo.Proto.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.GeoFramework.Contracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.67\lib\net40\TPG.GeoFramework.Contracts.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.70\lib\net40\TPG.GeoFramework.Contracts.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.GeoFramework.Core, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.67\lib\net40\TPG.GeoFramework.Core.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.70\lib\net40\TPG.GeoFramework.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.GeoFramework.Map.Core, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.67\lib\net40\TPG.GeoFramework.Map.Core.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.70\lib\net40\TPG.GeoFramework.Map.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.GeoFramework.Map.Core.Contracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.67\lib\net40\TPG.GeoFramework.Map.Core.Contracts.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.70\lib\net40\TPG.GeoFramework.Map.Core.Contracts.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.GeoFramework.MapCatalogServiceClient, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.67\lib\net40\TPG.GeoFramework.MapCatalogServiceClient.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.70\lib\net40\TPG.GeoFramework.MapCatalogServiceClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.GeoFramework.MapServiceInterfaces, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.67\lib\net40\TPG.GeoFramework.MapServiceInterfaces.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.70\lib\net40\TPG.GeoFramework.MapServiceInterfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.GeoFramework.RasterExport, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.Common.2.0.0.67\lib\net40\TPG.GeoFramework.RasterExport.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.Common.2.0.0.70\lib\net40\TPG.GeoFramework.RasterExport.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.Style.Core.Contracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.GeoFramework.Style.Core.Contracts.2.0.0.70\lib\net40\TPG.GeoFramework.Style.Core.Contracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.Symbols.Contracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.GeoFramework.Symbols.Contracts.2.0.0.70\lib\net40\TPG.GeoFramework.Symbols.Contracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.Track.Proto, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.Maria.TrackLayer.2.0.0.70\lib\net40\TPG.GeoFramework.Track.Proto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.TrackCore, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.Maria.TrackLayer.2.0.0.70\lib\net40\TPG.GeoFramework.TrackCore.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.TrackCore.Contracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.Maria.TrackLayer.2.0.0.70\lib\net40\TPG.GeoFramework.TrackCore.Contracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.TrackLayer, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.Maria.TrackLayer.2.0.0.70\lib\net40\TPG.GeoFramework.TrackLayer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.TrackLayer.Contracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.Maria.TrackLayer.2.0.0.70\lib\net40\TPG.GeoFramework.TrackLayer.Contracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.GeoFramework.TrackServiceClient, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.Maria.TrackLayer.2.0.0.70\lib\net40\TPG.GeoFramework.TrackServiceClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.GeoUnits, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.67\lib\net40\TPG.GeoUnits.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.70\lib\net40\TPG.GeoUnits.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.Maria.Common, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.Common.2.0.0.67\lib\net40\TPG.Maria.Common.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.Common.2.0.0.70\lib\net40\TPG.Maria.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.Maria.Contracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.67\lib\net40\TPG.Maria.Contracts.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.70\lib\net40\TPG.Maria.Contracts.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.Maria.CustomContracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.CustomLayer.2.0.0.67\lib\net40\TPG.Maria.CustomContracts.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.CustomLayer.2.0.0.70\lib\net40\TPG.Maria.CustomContracts.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.Maria.CustomLayer, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.CustomLayer.2.0.0.67\lib\net40\TPG.Maria.CustomLayer.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.CustomLayer.2.0.0.70\lib\net40\TPG.Maria.CustomLayer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.Maria.Internal, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.67\lib\net40\TPG.Maria.Internal.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.70\lib\net40\TPG.Maria.Internal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.Maria.MapContracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.67\lib\net40\TPG.Maria.MapContracts.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.70\lib\net40\TPG.Maria.MapContracts.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.Maria.MapLayer, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.67\lib\net40\TPG.Maria.MapLayer.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.70\lib\net40\TPG.Maria.MapLayer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.Maria.MariaUserControl, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.67\lib\net40\TPG.Maria.MariaUserControl.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.MariaUserControl.2.0.0.70\lib\net40\TPG.Maria.MariaUserControl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.Maria.TrackContracts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.Maria.TrackLayer.2.0.0.70\lib\net40\TPG.Maria.TrackContracts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TPG.Maria.TrackLayer, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\TPG.Maria.TrackLayer.2.0.0.70\lib\net40\TPG.Maria.TrackLayer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TPG.ServiceModel, Version=1.4.0.0, Culture=neutral, PublicKeyToken=e1f08960486e3cdd, processorArchitecture=MSIL">
-      <HintPath>..\packages\TPG.Maria.MapLayer.2.0.0.67\lib\net40\TPG.ServiceModel.dll</HintPath>
+      <HintPath>..\packages\TPG.Maria.Common.2.0.0.70\lib\net40\TPG.ServiceModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -133,6 +173,7 @@
     <Compile Include="AngleHost.xaml.cs">
       <DependentUpon>AngleHost.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TrackViewModel.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="AngleHost.xaml">
       <Generator>MSBuild:Compile</Generator>

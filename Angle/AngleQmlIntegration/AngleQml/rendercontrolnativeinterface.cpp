@@ -53,16 +53,16 @@ bool RenderControlNativeInterface::initialize(int width, int height)
 void RenderControlNativeInterface::renderFrame()
 {
 	bool ready = _controlWindow->isReady();
-	cout << "RenderControlNativeInterface::renderFrame(). Ready: " << ready << endl;
+	//cout << "RenderControlNativeInterface::renderFrame(). Ready: " << ready << endl;
     if(!_controlWindow || !ready)
         return;
 
-    _controlWindow->updateQuick();
+	_controlWindow->realUpdateQuick();
 }
 
 void *RenderControlNativeInterface::getBackBufferPointer()
 {
-    //cout << "getBackBufferPointer() called. _controlWindow" << _controlWindow <<  " initialized: " << _initialized << endl;
+    cout << "getBackBufferPointer() called. _controlWindow" << _controlWindow <<  " initialized: " << _initialized << endl;
     if(!_controlWindow || !_controlWindow->isReady())
         return nullptr;
 

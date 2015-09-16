@@ -5,7 +5,6 @@
 #include <QQmlContext>
 #include <QTimer>
 
-#include <angleqmlrenderwindow.h>
 #include <rendercontrolwindow.h>
 
 #include <iostream>

@@ -13,6 +13,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngleWpf", "AngleWpf\AngleWpf.csproj", "{94598244-377E-4EB4-85E5-5E7BB488AFBB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AngleInteractionMixedMode", "AngleInteractionMixedMode\AngleInteractionMixedMode.vcxproj", "{78E50AA9-976A-465C-B789-1BB1AFD2AFE8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A4657B82-7700-31A1-BF34-3E2BB444474B} = {A4657B82-7700-31A1-BF34-3E2BB444474B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AngleQml", "..\AngleQml\AngleQml.vcxproj", "{A4657B82-7700-31A1-BF34-3E2BB444474B}"
 EndProject

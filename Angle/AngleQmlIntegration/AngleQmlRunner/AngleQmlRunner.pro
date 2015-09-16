@@ -1,4 +1,4 @@
-QT += core quick qml widgets
+QT += core quick qml
 TARGET = AngleQmlRunner
 CONFIG += console
 CONFIG -= app_bundle
@@ -8,7 +8,7 @@ TEMPLATE = app
 DESTDIR = $$PWD/../build/bin
 SOURCES += main.cpp
 
-LIBS += -L$$PWD/../build/lib$${ARCH_EXT} -lAngleQml
+LIBS += -L$$PWD/../build/bin -lAngleQml
 
 INCLUDEPATH += $$PWD/../AngleQml
 DEPENDPATH += $$PWD/../AngleQml

@@ -3,6 +3,7 @@
 
 #include <QWindow>
 #include <QMatrix4x4>
+#include <QTimer>
 
 #include "angleqml_global.h"
 
@@ -21,7 +22,7 @@ QT_FORWARD_DECLARE_CLASS(QQuickItem)
 class ANGLEQMLSHARED_EXPORT RenderControlWindow : public QWindow
 {
     Q_OBJECT
-
+    Q_PROPERTY(float rotation READ rotation WRITE setRotation NOTIFY rotationChanged)
 public:
     RenderControlWindow();
     ~RenderControlWindow();
@@ -30,8 +31,15 @@ public:
 	bool isReady() { return _quickInitialized; }
 	bool makeCurrent();
 
+    float rotation() const;
+    void setRotation(float rotation);
+
 public slots:
     void updateQuick();
+	void realUpdateQuick();
+
+signals:
+    void rotationChanged();
 
 protected:
     void exposeEvent(QExposeEvent *e) Q_DECL_OVERRIDE;
@@ -46,7 +54,7 @@ private slots:
 private:
     void updateSizes();
 	void setupVertexAttribs();
-
+    float _rotation;
     QOpenGLContext *_openGLContext;
     QOffscreenSurface *_offscreenSurface;
     QQuickRenderControl *_renderControl;
@@ -62,6 +70,7 @@ private:
 	QOpenGLShaderProgram *_shaderProgram;
 	int _matrixLoc;
 	QMatrix4x4 _projMatrix;
+	QTimer _updateTimer;
 };
 
 #endif // RENDERCONTROLWINDOW_H
