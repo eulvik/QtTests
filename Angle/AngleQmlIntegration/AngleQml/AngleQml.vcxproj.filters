@@ -70,11 +70,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="fragmentshader.fsh">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="main.qml">
       <Filter>Resource Files</Filter>
     </None>
     <CustomBuild Include="qml.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+    <None Include="vertexshader.vsh">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

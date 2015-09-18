@@ -4,6 +4,7 @@
 #include <QWindow>
 #include <QMatrix4x4>
 #include <QTimer>
+#include <QString>
 
 #include "angleqml_global.h"
 
@@ -24,7 +25,7 @@ class ANGLEQMLSHARED_EXPORT RenderControlWindow : public QWindow
     Q_OBJECT
     Q_PROPERTY(float rotation READ rotation WRITE setRotation NOTIFY rotationChanged)
 public:
-    RenderControlWindow();
+    RenderControlWindow(QWindow *parent);
     ~RenderControlWindow();
 
     void startQuick(const QString &filename);
@@ -47,13 +48,14 @@ protected:
 
 private slots:
     void render();
-    void run();
+    void runQuickRendering();
     void createFbo();
     void destroyFbo();
 
 private:
     void updateSizes();
 	void setupVertexAttribs();
+    QString readTextFromFile(const QString &path);
     float _rotation;
     QOpenGLContext *_openGLContext;
     QOffscreenSurface *_offscreenSurface;

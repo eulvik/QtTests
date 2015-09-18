@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QTimer timer;
     timer.setInterval(16);
-    RenderControlWindow window;
+
+    RenderControlWindow window(nullptr);
     window.resize(1024, 768);
     window.show();
 

@@ -33,13 +33,13 @@ RenderControlNativeInterface::RenderControlNativeInterface() :
     }
 }
 
-bool RenderControlNativeInterface::initialize(int width, int height)
+bool RenderControlNativeInterface::initialize(HWND hwnd, int width, int height)
 {
     if(_initialized)
         return true;
 
 	cout << "Creating RendeControlWindow." << endl;
-    _controlWindow = new RenderControlWindow();
+    _controlWindow = new RenderControlWindow(QWindow::fromWinId((WId)hwnd));
 	cout << "Resizing surface." << endl;
     resizeSurface(width, height);
     _initialized = true;
@@ -110,6 +110,7 @@ void *RenderControlNativeInterface::getBackBufferPointer()
 
 void RenderControlNativeInterface::resizeSurface(int width, int height)
 {
+	cout << "RenderControlNativeInterface::resizeSurface(" << width << ", " << height << ")" << endl;
     _width = width;
     _height = height;
 
@@ -122,3 +123,7 @@ void RenderControlNativeInterface::shutdown()
     delete _application;
 }
 
+void RenderControlNativeInterface::animate()
+{
+	_controlWindow->setRotation(_controlWindow->rotation() + 1);
+}

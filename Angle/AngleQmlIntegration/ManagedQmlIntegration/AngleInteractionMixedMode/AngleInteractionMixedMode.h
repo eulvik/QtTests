@@ -36,13 +36,13 @@ namespace AngleInteractionMixedMode
 
 		void Simulate()
 		{
-			//_angleQmlNativeInterface->animate();
+			_angleQmlNativeInterface->animate();
 		}
 
 		bool IntializeAngle(IntPtr ^hwnd, int width, int height)
 		{
 			HWND hwndNative = (HWND) hwnd->ToPointer();
-			return _angleQmlNativeInterface->initialize(width, height);
+			return _angleQmlNativeInterface->initialize(hwndNative, width, height);
 		}
 
 		void RenderFrame()

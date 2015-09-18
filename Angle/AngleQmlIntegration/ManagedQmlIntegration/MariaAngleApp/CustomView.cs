@@ -13,8 +13,8 @@ namespace MariaAngleApp
         public CustomView()
         {
             _angleUserControl = new AngleUserControl();
-            _angleUserControl.Width = 300;
-            _angleUserControl.Height = 300;
+            _angleUserControl.Width = 600;
+            _angleUserControl.Height = 600;
             _angleUserControl.VerticalAlignment = VerticalAlignment.Top;
             _angleUserControl.HorizontalAlignment = HorizontalAlignment.Right;
 

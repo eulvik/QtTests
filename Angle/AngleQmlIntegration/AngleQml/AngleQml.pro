@@ -32,6 +32,8 @@ RESOURCES += \
 
 
 DISTFILES += *.qml \
+    fragmentshader.fsh \
+    vertexshader.vsh
 
 DESTDIR = $$PWD/../build/bin
 
